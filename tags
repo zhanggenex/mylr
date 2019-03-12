@@ -1,0 +1,344 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+AddrMemPair	analyzer/src/lib/PointerAnalysis.h	/^  typedef std::pair<Value *, MemoryLocation *> AddrMemPair;$/;"	t	class:PointerAnalysisPass
+AddressTakenFuncs	analyzer/src/lib/LRSan.h	/^  FuncSet AddressTakenFuncs;$/;"	m	struct:GlobalContext
+AllFuncs	analyzer/src/lib/CriticalVar.h	/^	NameFuncMap AllFuncs;$/;"	m	class:CriticalVarPass
+Bits	analyzer/src/lib/Common.h	/^  const uint64_t Bits = 8;$/;"	m	class:ModuleOracle
+CFGEdge	analyzer/src/lib/CriticalVar.h	/^	typedef std::pair<TerminatorInst *, unsigned> CFGEdge;$/;"	t	class:CriticalVarPass
+CUR_DIR	analyzer/Makefile	/^CUR_DIR = $(shell pwd)$/;"	m
+CallGraphPass	analyzer/src/lib/CallGraph.h	/^		CallGraphPass(GlobalContext *Ctx_)$/;"	f	class:CallGraphPass
+CallGraphPass	analyzer/src/lib/CallGraph.h	/^class CallGraphPass : public IterativeModulePass {$/;"	c
+CallInstSet	analyzer/src/lib/LRSan.h	/^typedef llvm::SmallPtrSet<llvm::CallInst*, 8> CallInstSet;$/;"	t
+CalleeMap	analyzer/src/lib/LRSan.h	/^typedef llvm::DenseMap<llvm::CallInst *, FuncSet> CalleeMap;$/;"	t
+Callees	analyzer/src/lib/LRSan.h	/^	CalleeMap Callees;$/;"	m	struct:GlobalContext
+CallerMap	analyzer/src/lib/LRSan.h	/^typedef llvm::DenseMap<llvm::Function*, CallInstSet> CallerMap;$/;"	t
+Callers	analyzer/src/lib/LRSan.h	/^	CallerMap Callers;$/;"	m	struct:GlobalContext
+CriticalFuncs	analyzer/src/lib/LRSan.h	/^  std::set<std::string> CriticalFuncs;$/;"	m	struct:GlobalContext
+CriticalVarPass	analyzer/src/lib/CriticalVar.h	/^	CriticalVarPass(GlobalContext *Ctx_)$/;"	f	class:CriticalVarPass
+CriticalVarPass	analyzer/src/lib/CriticalVar.h	/^class CriticalVarPass : public IterativeModulePass {$/;"	c
+Ctx	analyzer/src/lib/LRSan.h	/^	GlobalContext *Ctx;$/;"	m	class:IterativeModulePass
+DETECT_MEMFUNC_MODIFICATIONS	analyzer/src/lib/CriticalVar.cc	31;"	d	file:
+DETECT_STORE_MODIFICATIONS	analyzer/src/lib/CriticalVar.cc	33;"	d	file:
+DL	analyzer/src/lib/CallGraph.h	/^		const DataLayout *DL;$/;"	m	class:CallGraphPass
+Defined	analyzer/src/lib/CriticalVar.h	/^		Defined,$/;"	e	enum:CriticalVarPass::UseDefFlag
+Dumper	analyzer/src/lib/Common.h	/^  Dumper() {}$/;"	f	class:Dumper
+Dumper	analyzer/src/lib/Common.h	/^class Dumper {$/;"	c
+E2BIG	encoded-errno/include/uapi/asm-generic/errno-base.h	15;"	d
+EACCES	encoded-errno/include/uapi/asm-generic/errno-base.h	21;"	d
+EADDRINUSE	encoded-errno/include/uapi/asm-generic/errno.h	80;"	d
+EADDRNOTAVAIL	encoded-errno/include/uapi/asm-generic/errno.h	81;"	d
+EADV	encoded-errno/include/uapi/asm-generic/errno.h	50;"	d
+EAFNOSUPPORT	encoded-errno/include/uapi/asm-generic/errno.h	79;"	d
+EAGAIN	encoded-errno/include/uapi/asm-generic/errno-base.h	19;"	d
+EALREADY	encoded-errno/include/uapi/asm-generic/errno.h	96;"	d
+EBADCOOKIE	encoded-errno/include/linux/errno.h	24;"	d
+EBADE	encoded-errno/include/uapi/asm-generic/errno.h	32;"	d
+EBADF	encoded-errno/include/uapi/asm-generic/errno-base.h	17;"	d
+EBADFD	encoded-errno/include/uapi/asm-generic/errno.h	59;"	d
+EBADHANDLE	encoded-errno/include/linux/errno.h	22;"	d
+EBADMSG	encoded-errno/include/uapi/asm-generic/errno.h	56;"	d
+EBADR	encoded-errno/include/uapi/asm-generic/errno.h	33;"	d
+EBADRQC	encoded-errno/include/uapi/asm-generic/errno.h	36;"	d
+EBADSLT	encoded-errno/include/uapi/asm-generic/errno.h	37;"	d
+EBADTYPE	encoded-errno/include/linux/errno.h	28;"	d
+EBFONT	encoded-errno/include/uapi/asm-generic/errno.h	41;"	d
+EBUSY	encoded-errno/include/uapi/asm-generic/errno-base.h	24;"	d
+ECANCELED	encoded-errno/include/uapi/asm-generic/errno.h	108;"	d
+ECHILD	encoded-errno/include/uapi/asm-generic/errno-base.h	18;"	d
+ECHRNG	encoded-errno/include/uapi/asm-generic/errno.h	24;"	d
+ECOMM	encoded-errno/include/uapi/asm-generic/errno.h	52;"	d
+ECONNABORTED	encoded-errno/include/uapi/asm-generic/errno.h	85;"	d
+ECONNREFUSED	encoded-errno/include/uapi/asm-generic/errno.h	93;"	d
+ECONNRESET	encoded-errno/include/uapi/asm-generic/errno.h	86;"	d
+EDEADLK	encoded-errno/include/uapi/asm-generic/errno.h	6;"	d
+EDEADLOCK	encoded-errno/include/uapi/asm-generic/errno.h	39;"	d
+EDESTADDRREQ	encoded-errno/include/uapi/asm-generic/errno.h	71;"	d
+EDOM	encoded-errno/include/uapi/asm-generic/errno-base.h	41;"	d
+EDOTDOT	encoded-errno/include/uapi/asm-generic/errno.h	55;"	d
+EDQUOT	encoded-errno/include/uapi/asm-generic/errno.h	104;"	d
+EEXIST	encoded-errno/include/uapi/asm-generic/errno-base.h	25;"	d
+EFAULT	encoded-errno/include/uapi/asm-generic/errno-base.h	22;"	d
+EFBIG	encoded-errno/include/uapi/asm-generic/errno-base.h	35;"	d
+EHOSTDOWN	encoded-errno/include/uapi/asm-generic/errno.h	94;"	d
+EHOSTUNREACH	encoded-errno/include/uapi/asm-generic/errno.h	95;"	d
+EHWPOISON	encoded-errno/include/uapi/asm-generic/errno.h	120;"	d
+EIDRM	encoded-errno/include/uapi/asm-generic/errno.h	23;"	d
+EILSEQ	encoded-errno/include/uapi/asm-generic/errno.h	66;"	d
+EINPROGRESS	encoded-errno/include/uapi/asm-generic/errno.h	97;"	d
+EINTR	encoded-errno/include/uapi/asm-generic/errno-base.h	12;"	d
+EINVAL	encoded-errno/include/uapi/asm-generic/errno-base.h	30;"	d
+EIO	encoded-errno/include/uapi/asm-generic/errno-base.h	13;"	d
+EIOCBQUEUED	encoded-errno/include/linux/errno.h	30;"	d
+EISCONN	encoded-errno/include/uapi/asm-generic/errno.h	88;"	d
+EISDIR	encoded-errno/include/uapi/asm-generic/errno-base.h	29;"	d
+EISNAM	encoded-errno/include/uapi/asm-generic/errno.h	102;"	d
+EJUKEBOX	encoded-errno/include/linux/errno.h	29;"	d
+EKEYEXPIRED	encoded-errno/include/uapi/asm-generic/errno.h	110;"	d
+EKEYREJECTED	encoded-errno/include/uapi/asm-generic/errno.h	112;"	d
+EKEYREVOKED	encoded-errno/include/uapi/asm-generic/errno.h	111;"	d
+EL2HLT	encoded-errno/include/uapi/asm-generic/errno.h	31;"	d
+EL2NSYNC	encoded-errno/include/uapi/asm-generic/errno.h	25;"	d
+EL3HLT	encoded-errno/include/uapi/asm-generic/errno.h	26;"	d
+EL3RST	encoded-errno/include/uapi/asm-generic/errno.h	27;"	d
+ELIBACC	encoded-errno/include/uapi/asm-generic/errno.h	61;"	d
+ELIBBAD	encoded-errno/include/uapi/asm-generic/errno.h	62;"	d
+ELIBEXEC	encoded-errno/include/uapi/asm-generic/errno.h	65;"	d
+ELIBMAX	encoded-errno/include/uapi/asm-generic/errno.h	64;"	d
+ELIBSCN	encoded-errno/include/uapi/asm-generic/errno.h	63;"	d
+ELNRNG	encoded-errno/include/uapi/asm-generic/errno.h	28;"	d
+ELOOP	encoded-errno/include/uapi/asm-generic/errno.h	20;"	d
+EMEDIUMTYPE	encoded-errno/include/uapi/asm-generic/errno.h	107;"	d
+EMFILE	encoded-errno/include/uapi/asm-generic/errno-base.h	32;"	d
+EMLINK	encoded-errno/include/uapi/asm-generic/errno-base.h	39;"	d
+EMSGSIZE	encoded-errno/include/uapi/asm-generic/errno.h	72;"	d
+EMULTIHOP	encoded-errno/include/uapi/asm-generic/errno.h	54;"	d
+ENABLE_SOURCE_TRACKING	analyzer/src/lib/CriticalVar.cc	22;"	d	file:
+ENAMETOOLONG	encoded-errno/include/uapi/asm-generic/errno.h	7;"	d
+ENAVAIL	encoded-errno/include/uapi/asm-generic/errno.h	101;"	d
+ENETDOWN	encoded-errno/include/uapi/asm-generic/errno.h	82;"	d
+ENETRESET	encoded-errno/include/uapi/asm-generic/errno.h	84;"	d
+ENETUNREACH	encoded-errno/include/uapi/asm-generic/errno.h	83;"	d
+ENFILE	encoded-errno/include/uapi/asm-generic/errno-base.h	31;"	d
+ENOANO	encoded-errno/include/uapi/asm-generic/errno.h	35;"	d
+ENOBUFS	encoded-errno/include/uapi/asm-generic/errno.h	87;"	d
+ENOCSI	encoded-errno/include/uapi/asm-generic/errno.h	30;"	d
+ENODATA	encoded-errno/include/uapi/asm-generic/errno.h	43;"	d
+ENODEV	encoded-errno/include/uapi/asm-generic/errno-base.h	27;"	d
+ENOENT	encoded-errno/include/uapi/asm-generic/errno-base.h	10;"	d
+ENOEXEC	encoded-errno/include/uapi/asm-generic/errno-base.h	16;"	d
+ENOIOCTLCMD	encoded-errno/include/linux/errno.h	16;"	d
+ENOKEY	encoded-errno/include/uapi/asm-generic/errno.h	109;"	d
+ENOLCK	encoded-errno/include/uapi/asm-generic/errno.h	8;"	d
+ENOLINK	encoded-errno/include/uapi/asm-generic/errno.h	49;"	d
+ENOMEDIUM	encoded-errno/include/uapi/asm-generic/errno.h	106;"	d
+ENOMEM	encoded-errno/include/uapi/asm-generic/errno-base.h	20;"	d
+ENOMSG	encoded-errno/include/uapi/asm-generic/errno.h	22;"	d
+ENONET	encoded-errno/include/uapi/asm-generic/errno.h	46;"	d
+ENOPKG	encoded-errno/include/uapi/asm-generic/errno.h	47;"	d
+ENOPROTOOPT	encoded-errno/include/uapi/asm-generic/errno.h	74;"	d
+ENOSPC	encoded-errno/include/uapi/asm-generic/errno-base.h	36;"	d
+ENOSR	encoded-errno/include/uapi/asm-generic/errno.h	45;"	d
+ENOSTR	encoded-errno/include/uapi/asm-generic/errno.h	42;"	d
+ENOSYS	encoded-errno/include/uapi/asm-generic/errno.h	17;"	d
+ENOTBLK	encoded-errno/include/uapi/asm-generic/errno-base.h	23;"	d
+ENOTCONN	encoded-errno/include/uapi/asm-generic/errno.h	89;"	d
+ENOTDIR	encoded-errno/include/uapi/asm-generic/errno-base.h	28;"	d
+ENOTEMPTY	encoded-errno/include/uapi/asm-generic/errno.h	19;"	d
+ENOTNAM	encoded-errno/include/uapi/asm-generic/errno.h	100;"	d
+ENOTRECOVERABLE	encoded-errno/include/uapi/asm-generic/errno.h	116;"	d
+ENOTSOCK	encoded-errno/include/uapi/asm-generic/errno.h	70;"	d
+ENOTSUPP	encoded-errno/include/linux/errno.h	25;"	d
+ENOTSYNC	encoded-errno/include/linux/errno.h	23;"	d
+ENOTTY	encoded-errno/include/uapi/asm-generic/errno-base.h	33;"	d
+ENOTUNIQ	encoded-errno/include/uapi/asm-generic/errno.h	58;"	d
+ENXIO	encoded-errno/include/uapi/asm-generic/errno-base.h	14;"	d
+EOPENSTALE	encoded-errno/include/linux/errno.h	19;"	d
+EOPNOTSUPP	encoded-errno/include/uapi/asm-generic/errno.h	77;"	d
+EOVERFLOW	encoded-errno/include/uapi/asm-generic/errno.h	57;"	d
+EOWNERDEAD	encoded-errno/include/uapi/asm-generic/errno.h	115;"	d
+EPERM	encoded-errno/include/uapi/asm-generic/errno-base.h	9;"	d
+EPFNOSUPPORT	encoded-errno/include/uapi/asm-generic/errno.h	78;"	d
+EPIPE	encoded-errno/include/uapi/asm-generic/errno-base.h	40;"	d
+EPROBE_DEFER	encoded-errno/include/linux/errno.h	18;"	d
+EPROTO	encoded-errno/include/uapi/asm-generic/errno.h	53;"	d
+EPROTONOSUPPORT	encoded-errno/include/uapi/asm-generic/errno.h	75;"	d
+EPROTOTYPE	encoded-errno/include/uapi/asm-generic/errno.h	73;"	d
+ERANGE	encoded-errno/include/uapi/asm-generic/errno-base.h	42;"	d
+ERECALLCONFLICT	encoded-errno/include/linux/errno.h	31;"	d
+EREMCHG	encoded-errno/include/uapi/asm-generic/errno.h	60;"	d
+EREMOTE	encoded-errno/include/uapi/asm-generic/errno.h	48;"	d
+EREMOTEIO	encoded-errno/include/uapi/asm-generic/errno.h	103;"	d
+ERESTART	encoded-errno/include/uapi/asm-generic/errno.h	67;"	d
+ERESTARTNOHAND	encoded-errno/include/linux/errno.h	15;"	d
+ERESTARTNOINTR	encoded-errno/include/linux/errno.h	14;"	d
+ERESTARTSYS	encoded-errno/include/linux/errno.h	13;"	d
+ERESTART_RESTARTBLOCK	encoded-errno/include/linux/errno.h	17;"	d
+ERFKILL	encoded-errno/include/uapi/asm-generic/errno.h	118;"	d
+EROFS	encoded-errno/include/uapi/asm-generic/errno-base.h	38;"	d
+ERR	analyzer/src/lib/Common.h	27;"	d
+ERRNO_MASK	analyzer/src/lib/Config.h	21;"	d
+ERRNO_PREFIX	analyzer/src/lib/Config.h	20;"	d
+ERRNO_PREFIX	encoded-errno/include/uapi/asm-generic/errno-base.h	5;"	d
+ESERVERFAULT	encoded-errno/include/linux/errno.h	27;"	d
+ESHUTDOWN	encoded-errno/include/uapi/asm-generic/errno.h	90;"	d
+ESOCKTNOSUPPORT	encoded-errno/include/uapi/asm-generic/errno.h	76;"	d
+ESPIPE	encoded-errno/include/uapi/asm-generic/errno-base.h	37;"	d
+ESRCH	encoded-errno/include/uapi/asm-generic/errno-base.h	11;"	d
+ESRMNT	encoded-errno/include/uapi/asm-generic/errno.h	51;"	d
+ESTALE	encoded-errno/include/uapi/asm-generic/errno.h	98;"	d
+ESTRPIPE	encoded-errno/include/uapi/asm-generic/errno.h	68;"	d
+ETIME	encoded-errno/include/uapi/asm-generic/errno.h	44;"	d
+ETIMEDOUT	encoded-errno/include/uapi/asm-generic/errno.h	92;"	d
+ETOOMANYREFS	encoded-errno/include/uapi/asm-generic/errno.h	91;"	d
+ETOOSMALL	encoded-errno/include/linux/errno.h	26;"	d
+ETXTBSY	encoded-errno/include/uapi/asm-generic/errno-base.h	34;"	d
+EUCLEAN	encoded-errno/include/uapi/asm-generic/errno.h	99;"	d
+EUNATCH	encoded-errno/include/uapi/asm-generic/errno.h	29;"	d
+EUSERS	encoded-errno/include/uapi/asm-generic/errno.h	69;"	d
+EWOULDBLOCK	encoded-errno/include/uapi/asm-generic/errno.h	21;"	d
+EXDEV	encoded-errno/include/uapi/asm-generic/errno-base.h	26;"	d
+EXFULL	encoded-errno/include/uapi/asm-generic/errno.h	34;"	d
+EdgeErrnoFlag	analyzer/src/lib/CriticalVar.h	/^	typedef std::map<CFGEdge, ErrnoFlag> EdgeErrnoFlag;$/;"	t	class:CriticalVarPass
+EdgeValue	analyzer/src/lib/CriticalVar.h	/^	typedef std::pair<CFGEdge, Value *> EdgeValue;$/;"	t	class:CriticalVarPass
+ErrnoFlag	analyzer/src/lib/CriticalVar.h	/^	enum ErrnoFlag {$/;"	g	class:CriticalVarPass
+FuncAAResults	analyzer/src/lib/LRSan.h	/^  FuncAAResultsMap FuncAAResults;$/;"	m	struct:GlobalContext
+FuncAAResultsMap	analyzer/src/lib/LRSan.h	/^typedef std::map<llvm::Function *, AAResults *> FuncAAResultsMap;$/;"	t
+FuncPAResults	analyzer/src/lib/LRSan.h	/^  FuncPointerAnalysisMap FuncPAResults;$/;"	m	struct:GlobalContext
+FuncPointerAnalysisMap	analyzer/src/lib/LRSan.h	/^typedef std::map<llvm::Function *, PointerAnalysisMap> FuncPointerAnalysisMap;$/;"	t
+FuncSet	analyzer/src/lib/LRSan.h	/^typedef llvm::SmallPtrSet<llvm::Function*, 8> FuncSet;$/;"	t
+Funcs	analyzer/src/lib/LRSan.h	/^	NameFuncMap Funcs;$/;"	m	struct:GlobalContext
+GlobalContext	analyzer/src/lib/LRSan.h	/^  GlobalContext() {$/;"	f	struct:GlobalContext
+GlobalContext	analyzer/src/lib/LRSan.h	/^struct GlobalContext {$/;"	s
+GlobalCtx	analyzer/src/lib/LRSan.cc	/^GlobalContext GlobalCtx;$/;"	v
+Helper	analyzer/src/lib/Common.h	/^class Helper {$/;"	c
+ID	analyzer/src/lib/LRSan.h	/^	const char * ID;$/;"	m	class:IterativeModulePass
+IndirectCallInsts	analyzer/src/lib/LRSan.h	/^  std::vector<CallInst *>IndirectCallInsts;$/;"	m	struct:GlobalContext
+InstructionUseDef	analyzer/src/lib/CriticalVar.h	/^	typedef std::pair<Instruction *, UseDefFlag> InstructionUseDef;$/;"	t	class:CriticalVarPass
+Int8PtrTy	analyzer/src/lib/CallGraph.h	/^		Type *Int8PtrTy;$/;"	m	class:CallGraphPass
+IntPtrTy	analyzer/src/lib/CallGraph.h	/^		Type *IntPtrTy;$/;"	m	class:CallGraphPass
+InvolvedModules	analyzer/src/lib/LRSan.h	/^  std::set<std::string> InvolvedModules;$/;"	m	struct:GlobalContext
+IterativeModulePass	analyzer/src/lib/LRSan.h	/^	IterativeModulePass(GlobalContext *Ctx_, const char *ID_)$/;"	f	class:IterativeModulePass
+IterativeModulePass	analyzer/src/lib/LRSan.h	/^class IterativeModulePass {$/;"	c
+KBLU	analyzer/src/lib/Common.h	39;"	d
+KCYN	analyzer/src/lib/Common.h	41;"	d
+KGRN	analyzer/src/lib/Common.h	37;"	d
+KMAG	analyzer/src/lib/Common.h	40;"	d
+KNRM	analyzer/src/lib/Common.h	35;"	d
+KRED	analyzer/src/lib/Common.h	36;"	d
+KWHT	analyzer/src/lib/Common.h	42;"	d
+KYEL	analyzer/src/lib/Common.h	38;"	d
+LINUX_BC_DIR	analyzer/src/lib/Config.h	26;"	d
+LINUX_SOURCE_DIR	analyzer/src/lib/Config.h	25;"	d
+LLVM_BUILD	analyzer/Makefile	/^LLVM_BUILD := ${CUR_DIR}\/..\/llvm\/build$/;"	m
+LOG	analyzer/src/lib/Common.h	16;"	d
+LoadStaticData	analyzer/src/lib/LRSan.cc	/^void LoadStaticData(GlobalContext *GCtx) {$/;"	f
+MUST_ALIAS	analyzer/src/lib/PointerAnalysis.cc	9;"	d	file:
+May_Return_Errno	analyzer/src/lib/CriticalVar.h	/^		May_Return_Errno$/;"	e	enum:CriticalVarPass::ErrnoFlag
+MemWriteFuncs	analyzer/src/lib/LRSan.h	/^	std::map<std::string, uint8_t> MemWriteFuncs;$/;"	m	struct:GlobalContext
+ModuleList	analyzer/src/lib/LRSan.h	/^typedef std::vector< std::pair<llvm::Module*, llvm::StringRef> > ModuleList;$/;"	t
+ModuleMaps	analyzer/src/lib/LRSan.h	/^  ModuleNameMap ModuleMaps;$/;"	m	struct:GlobalContext
+ModuleNameMap	analyzer/src/lib/LRSan.h	/^typedef std::unordered_map<llvm::Module*, llvm::StringRef> ModuleNameMap;$/;"	t
+ModuleOracle	analyzer/src/lib/Common.h	/^  ModuleOracle(Module &m) :$/;"	f	class:ModuleOracle
+ModuleOracle	analyzer/src/lib/Common.h	/^class ModuleOracle {$/;"	c
+Modules	analyzer/src/lib/LRSan.h	/^  ModuleList Modules;$/;"	m	struct:GlobalContext
+Must_Return_Errno	analyzer/src/lib/CriticalVar.h	/^		Must_Return_Errno,$/;"	e	enum:CriticalVarPass::ErrnoFlag
+NPROC	analyzer/Makefile	/^NPROC := ${shell nproc}$/;"	m
+NUM_ADDRESSES_TO_TRACK	analyzer/src/lib/CriticalVar.cc	26;"	d	file:
+NUM_FUNCTIONS_TO_TRACK	analyzer/src/lib/CriticalVar.cc	29;"	d	file:
+NameFuncMap	analyzer/src/lib/LRSan.h	/^typedef std::unordered_map<std::string, llvm::Function*> NameFuncMap;$/;"	t
+NumFunctions	analyzer/src/lib/LRSan.h	/^  unsigned NumFunctions;$/;"	m	struct:GlobalContext
+OP	analyzer/src/lib/Common.h	23;"	d
+PointerAnalysisMap	analyzer/src/lib/LRSan.h	/^typedef std::map<llvm::Value *, std::set<llvm::Value *>> PointerAnalysisMap;$/;"	t
+PointerAnalysisPass	analyzer/src/lib/PointerAnalysis.h	/^    PointerAnalysisPass(GlobalContext *Ctx_)$/;"	f	class:PointerAnalysisPass
+PointerAnalysisPass	analyzer/src/lib/PointerAnalysis.h	/^class PointerAnalysisPass : public IterativeModulePass {$/;"	c
+RESULTS_FILE	analyzer/src/lib/Config.h	17;"	d
+Reserved	analyzer/src/lib/CriticalVar.h	/^		Reserved,$/;"	e	enum:CriticalVarPass::ErrnoFlag
+Reserverd	analyzer/src/lib/CriticalVar.h	/^		Reserverd,$/;"	e	enum:CriticalVarPass::UseDefFlag
+SOUND_MODE	analyzer/src/lib/Config.h	15;"	d
+SRC_BUILD	analyzer/Makefile	/^SRC_BUILD := ${CURDIR}\/build$/;"	m
+SRC_DIR	analyzer/Makefile	/^SRC_DIR := ${CURDIR}\/src$/;"	m
+SetCopyFuncs	analyzer/src/lib/Config.h	/^static void SetCopyFuncs($/;"	f
+SetCriticalFuncs	analyzer/src/lib/Config.h	/^static void SetCriticalFuncs($/;"	f
+SetHeapAllocFuncs	analyzer/src/lib/Config.h	/^static void SetHeapAllocFuncs($/;"	f
+SetInitFuncs	analyzer/src/lib/Config.h	/^static void SetInitFuncs($/;"	f
+SetMemWriteFuncs	analyzer/src/lib/Config.h	/^static void SetMemWriteFuncs($/;"	f
+SetNonSinkFuncs	analyzer/src/lib/Config.h	/^static void SetNonSinkFuncs($/;"	f
+SetSinkFuncs	analyzer/src/lib/Config.h	/^static void SetSinkFuncs($/;"	f
+TLI	analyzer/src/lib/PointerAnalysis.h	/^    TargetLibraryInfo *TLI;$/;"	m	class:PointerAnalysisPass
+TrackedAddr	analyzer/src/lib/CriticalVar.h	/^	std::set<Value *> TrackedAddr;$/;"	m	class:CriticalVarPass
+UseDefFlag	analyzer/src/lib/CriticalVar.h	/^	enum UseDefFlag {$/;"	g	class:CriticalVarPass
+Used	analyzer/src/lib/CriticalVar.h	/^		Used,$/;"	e	enum:CriticalVarPass::UseDefFlag
+VARIABLE_ONLY	analyzer/src/lib/CriticalVar.cc	20;"	d	file:
+WARN	analyzer/src/lib/Common.h	25;"	d
+_ASM_GENERIC_ERRNO_BASE_H	encoded-errno/include/uapi/asm-generic/errno-base.h	2;"	d
+_ASM_GENERIC_ERRNO_H	encoded-errno/include/uapi/asm-generic/errno.h	2;"	d
+_CALL_GRAPH_H	analyzer/src/lib/CallGraph.h	2;"	d
+_COMMON_H_	analyzer/src/lib/Common.h	2;"	d
+_CRITICAL_VAR_H	analyzer/src/lib/CriticalVar.h	2;"	d
+_LINUX_ERRNO_H	encoded-errno/include/linux/errno.h	2;"	d
+_LRSAN_GLOBAL_H	analyzer/src/lib/LRSan.h	2;"	d
+_POINTER_ANALYSIS_H	analyzer/src/lib/PointerAnalysis.h	2;"	d
+_SACONFIG_H	analyzer/src/lib/Config.h	2;"	d
+addPHINodeEdges	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::addPHINodeEdges(PHINode *PN, $/;"	f	class:CriticalVarPass
+build_src_func	analyzer/Makefile	/^build_src_func = \\$/;"	m
+checkAlias	analyzer/src/lib/CriticalVar.cc	/^bool CriticalVarPass::checkAlias(Value *Addr1, Value *Addr2,$/;"	f	class:CriticalVarPass
+checkReturnValue	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::checkReturnValue(Function *F, $/;"	f	class:CriticalVarPass
+checkValueErrno	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::checkValueErrno(Function *F, $/;"	f	class:CriticalVarPass
+cuc_counter	analyzer/src/lib/CriticalVar.h	/^	unsigned int cuc_counter; \/\/ counter of check-use chains$/;"	m	class:CriticalVarPass
+cv_set	analyzer/src/lib/CriticalVar.h	/^	std::set<Value *> cv_set; \/\/ set of critical variables$/;"	m	class:CriticalVarPass
+detectAliasPointers	analyzer/src/lib/PointerAnalysis.cc	/^void PointerAnalysisPass::detectAliasPointers(Function *F,$/;"	f	class:PointerAnalysisPass
+dl	analyzer/src/lib/Common.h	/^  const DataLayout &dl;$/;"	m	class:ModuleOracle
+doFinalization	analyzer/src/lib/CallGraph.cc	/^bool CallGraphPass::doFinalization(Module *M) {$/;"	f	class:CallGraphPass
+doFinalization	analyzer/src/lib/CriticalVar.cc	/^bool CriticalVarPass::doFinalization(Module *M) {$/;"	f	class:CriticalVarPass
+doFinalization	analyzer/src/lib/LRSan.h	/^	virtual bool doFinalization(llvm::Module *M)$/;"	f	class:IterativeModulePass
+doFinalization	analyzer/src/lib/PointerAnalysis.cc	/^bool PointerAnalysisPass::doFinalization(Module *M) {$/;"	f	class:PointerAnalysisPass
+doInitialization	analyzer/src/lib/CallGraph.cc	/^bool CallGraphPass::doInitialization(Module *M) {$/;"	f	class:CallGraphPass
+doInitialization	analyzer/src/lib/CriticalVar.cc	/^bool CriticalVarPass::doInitialization(Module *M) {$/;"	f	class:CriticalVarPass
+doInitialization	analyzer/src/lib/LRSan.h	/^	virtual bool doInitialization(llvm::Module *M)$/;"	f	class:IterativeModulePass
+doInitialization	analyzer/src/lib/PointerAnalysis.cc	/^bool PointerAnalysisPass::doInitialization(Module *M) {$/;"	f	class:PointerAnalysisPass
+doModulePass	analyzer/src/lib/CallGraph.cc	/^bool CallGraphPass::doModulePass(Module *M) {$/;"	f	class:CallGraphPass
+doModulePass	analyzer/src/lib/CriticalVar.cc	/^bool CriticalVarPass::doModulePass(Module *M) {$/;"	f	class:CriticalVarPass
+doModulePass	analyzer/src/lib/LRSan.h	/^	virtual bool doModulePass(llvm::Module *M)$/;"	f	class:IterativeModulePass
+doModulePass	analyzer/src/lib/PointerAnalysis.cc	/^bool PointerAnalysisPass::doModulePass(Module *M) {$/;"	f	class:PointerAnalysisPass
+dumpEdges	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::dumpEdges(EdgeErrnoFlag &errnoEdges) {$/;"	f	class:CriticalVarPass
+errno_decode	encoded-errno/include/uapi/asm-generic/errno-base.h	7;"	d
+errno_encode	encoded-errno/include/uapi/asm-generic/errno-base.h	6;"	d
+filterDefBeforeCheck	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::filterDefBeforeCheck(Value *CV,$/;"	f	class:CriticalVarPass
+filterDefFromCheckedValue	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::filterDefFromCheckedValue($/;"	f	class:CriticalVarPass
+filterNonGlobalVariables	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::filterNonGlobalVariables($/;"	f	class:CriticalVarPass
+filterUseBeforeDef	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::filterUseBeforeDef(std::set<InstructionUseDef> &udSet) {$/;"	f	class:CriticalVarPass
+findCalleesByType	analyzer/src/lib/CallGraph.cc	/^void CallGraphPass::findCalleesByType(CallInst *CI, FuncSet &S) {$/;"	f	class:CallGraphPass
+findCheckedValue	analyzer/src/lib/CriticalVar.cc	/^Value * CriticalVarPass::findCheckedValue(Instruction *CI) {$/;"	f	class:CriticalVarPass
+findCriticalVariable	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::findCriticalVariable($/;"	f	class:CriticalVarPass
+findDominatingCheck	analyzer/src/lib/CriticalVar.cc	/^Instruction * CriticalVarPass::findDominatingCheck(Value *RV) {$/;"	f	class:CriticalVarPass
+findSecurityChecks	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::findSecurityChecks($/;"	f	class:CriticalVarPass
+findSrcForModification	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::findSrcForModification($/;"	f	class:CriticalVarPass
+findUseDefFromCVAddr	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::findUseDefFromCVAddr($/;"	f	class:CriticalVarPass
+findUseDefOfCriticalVar	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::findUseDefOfCriticalVar($/;"	f	class:CriticalVarPass
+getAliasPointers	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::getAliasPointers($/;"	f	class:CriticalVarPass
+getBits	analyzer/src/lib/Common.h	/^  uint64_t getBits() {$/;"	f	class:ModuleOracle
+getCalledFuncName	analyzer/src/lib/CriticalVar.cc	/^StringRef CriticalVarPass::getCalledFuncName(Value *V) {$/;"	f	class:CriticalVarPass
+getDataLayout	analyzer/src/lib/Common.h	/^  const DataLayout &getDataLayout() {$/;"	f	class:ModuleOracle
+getPointerSize	analyzer/src/lib/Common.h	/^  uint64_t getPointerSize() {$/;"	f	class:ModuleOracle
+getPointerWidth	analyzer/src/lib/Common.h	/^  uint64_t getPointerWidth() {$/;"	f	class:ModuleOracle
+getTargetLibraryInfo	analyzer/src/lib/Common.h	/^  TargetLibraryInfo &getTargetLibraryInfo() {$/;"	f	class:ModuleOracle
+getTypeOffset	analyzer/src/lib/Common.h	/^  uint64_t getTypeOffset(Type *type, unsigned idx) {$/;"	f	class:ModuleOracle
+getTypeSize	analyzer/src/lib/Common.h	/^  uint64_t getTypeSize(Type *ty) {$/;"	f	class:ModuleOracle
+getTypeWidth	analyzer/src/lib/Common.h	/^  uint64_t getTypeWidth(Type *ty) {$/;"	f	class:ModuleOracle
+getValueName	analyzer/src/lib/Common.h	/^  static string getValueName(Value *v) {$/;"	f	class:Helper
+getValueRepr	analyzer/src/lib/Common.h	/^  static string getValueRepr(Value *v) {$/;"	f	class:Helper
+getValueType	analyzer/src/lib/Common.h	/^  static string getValueType(Value *v) {$/;"	f	class:Helper
+identifyCriticalVariables	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::identifyCriticalVariables($/;"	f	class:CriticalVarPass
+isConstant	analyzer/src/lib/CriticalVar.cc	/^bool CriticalVarPass::isConstant(Value *V) {$/;"	f	class:CriticalVarPass
+isExploitable	analyzer/src/lib/CriticalVar.cc	/^bool CriticalVarPass::isExploitable($/;"	f	class:CriticalVarPass
+isFunctionParameter	analyzer/src/lib/CriticalVar.cc	/^bool CriticalVarPass::isFunctionParameter(Value *V, Function *F) {$/;"	f	class:CriticalVarPass
+isReintPointerType	analyzer/src/lib/Common.h	/^  bool isReintPointerType(Type *ty) {$/;"	f	class:ModuleOracle
+isValueErrno	analyzer/src/lib/CriticalVar.cc	/^bool CriticalVarPass::isValueErrno(Value *V) {$/;"	f	class:CriticalVarPass
+is_errno	analyzer/src/lib/Config.h	22;"	d
+lcc_counter	analyzer/src/lib/CriticalVar.h	/^	unsigned int lcc_counter; \/\/ counter of lacking-check cases$/;"	m	class:CriticalVarPass
+main	analyzer/src/lib/LRSan.cc	/^int main(int argc, char **argv)$/;"	f
+markAllEdgesFromBlock	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::markAllEdgesFromBlock($/;"	f	class:CriticalVarPass
+markAllEdgesToBlock	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::markAllEdgesToBlock($/;"	f	class:CriticalVarPass
+markEdge	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::markEdge(CFGEdge &CE, $/;"	f	class:CriticalVarPass
+markEdgeBlockToBlock	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::markEdgeBlockToBlock(BasicBlock *predBB, $/;"	f	class:CriticalVarPass
+possibleUseStResult	analyzer/src/lib/CriticalVar.cc	/^bool CriticalVarPass::possibleUseStResult($/;"	f	class:CriticalVarPass
+printSourceCode	analyzer/src/lib/CriticalVar.cc	/^static void printSourceCode(unsigned lineno, std::string &src_file) {$/;"	f	file:
+printSourceCodeInfo	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::printSourceCodeInfo(Instruction *I) {$/;"	f	class:CriticalVarPass
+printSourceCodeInfo	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::printSourceCodeInfo(Value *V) {$/;"	f	class:CriticalVarPass
+recurCheckValueErrno	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::recurCheckValueErrno($/;"	f	class:CriticalVarPass
+run	analyzer/src/lib/LRSan.cc	/^void IterativeModulePass::run(ModuleList &modules) {$/;"	f	class:IterativeModulePass
+sc_counter	analyzer/src/lib/CriticalVar.h	/^	unsigned int sc_counter; \/\/ counter of security checks$/;"	m	class:CriticalVarPass
+tli	analyzer/src/lib/Common.h	/^  TargetLibraryInfo tli;$/;"	m	class:ModuleOracle
+trackAliasAddrAfterModification	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::trackAliasAddrAfterModification($/;"	f	class:CriticalVarPass
+trackCalledFunc	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::trackCalledFunc($/;"	f	class:CriticalVarPass
+trackSrc	analyzer/src/lib/CriticalVar.cc	/^void CriticalVarPass::trackSrc($/;"	f	class:CriticalVarPass
+trackSrcOfVal	analyzer/src/lib/CriticalVar.cc	/^Value *CriticalVarPass::trackSrcOfVal($/;"	f	class:CriticalVarPass
+typedValue	analyzer/src/lib/Common.h	/^  void typedValue(Value *val) {$/;"	f	class:Dumper
+valueCheckPairs	analyzer/src/lib/CriticalVar.h	/^	std::map<Value *, Instruction *>valueCheckPairs;$/;"	m	class:CriticalVarPass
+valueName	analyzer/src/lib/Common.h	/^  void valueName(Value *val) {$/;"	f	class:Dumper
+~Dumper	analyzer/src/lib/Common.h	/^  ~Dumper() {}$/;"	f	class:Dumper
+~ModuleOracle	analyzer/src/lib/Common.h	/^  ~ModuleOracle() {}$/;"	f	class:ModuleOracle
