@@ -58,13 +58,18 @@ bool CriticalVarPass::isValueErrno(Value *V) {
 		return false;
 
 	// The value is a constant integer.
-//	ConstantInt *CI = dyn_cast<ConstantInt>(V);
+	ConstantInt *CI = dyn_cast<ConstantInt>(V);
 //	std::string str;
 //    	llvm::raw_string_ostream stream(str);
 //    	CI->print(stream);
 	if (CI && (CI->getType()->getBitWidth() == 32 ||
 				CI->getType()->getBitWidth() == 64)) {
 		const APInt &value = CI->getValue();
+		std::string str;
+    		llvm::raw_string_ostream stream(str);
+		value.print(stream, 0);
+		//std::cout << "const value: " << CI->getValue().toString() << "\n";
+		std::cout << "const value: " << str << "\n";
 		// The value is an errno (negative or positive).
 		if (is_errno(-value) || is_errno(value))
 			return true;
