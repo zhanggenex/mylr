@@ -32,7 +32,7 @@
 
 #define DETECT_STORE_MODIFICATIONS true
 
-//#define DEBUG_PRINT 1
+#define DEBUG_PRINT 1
 
 
 using namespace llvm;
@@ -58,7 +58,10 @@ bool CriticalVarPass::isValueErrno(Value *V) {
 		return false;
 
 	// The value is a constant integer.
-	ConstantInt *CI = dyn_cast<ConstantInt>(V);
+//	ConstantInt *CI = dyn_cast<ConstantInt>(V);
+//	std::string str;
+//    	llvm::raw_string_ostream stream(str);
+//    	CI->print(stream);
 	if (CI && (CI->getType()->getBitWidth() == 32 ||
 				CI->getType()->getBitWidth() == 64)) {
 		const APInt &value = CI->getValue();
@@ -300,6 +303,11 @@ void CriticalVarPass::recurCheckValueErrno(
 				auto SI = dyn_cast<StoreInst>(&*rit);
 				if (SI && SI->getPointerOperand() == LPO) {
 					Value *SVO = SI->getValueOperand();
+					std::string str;
+    					llvm::raw_string_ostream stream(str);
+    					SVO->print(stream);
+					std::cout << "store value: " << str << "\n";
+					//std::cout << "isconst is error: " << isConstant(SVO) << "   " << isValueErrno(SVO) << "\n";
 					if (isConstant(SVO)) {
 						if (isValueErrno(SVO)) {
 							markAllEdgesFromBlock(BB, Must_Return_Errno, errnoEdges);
@@ -491,7 +499,7 @@ void CriticalVarPass::recurCheckValueErrno(
 
 	// TODO: support more LLVM IR types.
 #ifdef DEBUG_PRINT
-	OP << "== Warning: unsupported LLVM IR:"
+	OP << "== Warning: unsupported LLVM IR (i32 x ?):"
 		<< *V << '\n';
 #endif
 }
@@ -512,6 +520,10 @@ void CriticalVarPass::checkValueErrno(Function *F,
 	PV.clear();
 
 	// Construct the list.
+	std::string str;
+    	llvm::raw_string_ostream stream(str);
+    	V->print(stream);
+	//std::cout << "v size: " << str << "\n";
 	EV.push_back(std::make_pair(std::make_pair((TerminatorInst *)NULL, 0), V));
 
 #ifdef DEBUG_PRINT
@@ -558,6 +570,7 @@ void CriticalVarPass::findSecurityChecks(
 		bool SecureCond2 = false; /* One path must have possibility not to return any errno. */
 
 		int NumSucc = TI->getNumSuccessors();
+		//std::cout << "num succ: " << NumSucc << "\n";
 		if (NumSucc < 2)
 			continue;
 
@@ -571,6 +584,7 @@ void CriticalVarPass::findSecurityChecks(
 			else
 				++NumMayErr;
 		}
+		std::cout << "must may return " << NumMustErr << "   " << NumMayErr << "\n";
 
 		// not a security check
 		if (!(NumMustErr && NumMayErr)) {
@@ -595,7 +609,7 @@ void CriticalVarPass::findSecurityChecks(
 		if (!Cond)
 			OP << "Warnning: cannot find the check.\n";
 		else {
-			//OP << "Condition of the check is: " << *Cond << "\n";
+			OP << "Condition of the check is: " << *Cond << "\n";
 			securityChecks.insert(Cond);
 		}
 	}
@@ -1862,6 +1876,7 @@ bool CriticalVarPass::doInitialization(Module *M) {
 	// XXX: different modules may have functions with same name.
 	for (Function &F : *M) {
 		StringRef FName = F.getName();
+		//std::cout << "Name: " << F.getName().data() << "\n";
 		if (!F.empty())
 			AllFuncs[FName] = &F;
 	}
@@ -1912,6 +1927,11 @@ bool CriticalVarPass::doModulePass(Module *M) {
 			if (!RV)
 				continue;
 
+			std::string str;
+                        llvm::raw_string_ostream stream(str);
+                        RV->print(stream);
+                        std::cout << "return value: " << str << "\n";
+
 #ifdef DEBUG_PRINT
 			OP << "\n== Working on function: "
 				<< "\033[32m" << F->getName() << "\033[0m" << '\n';
@@ -1925,14 +1945,14 @@ bool CriticalVarPass::doModulePass(Module *M) {
 					<< "\033[32m" << F->getName() << "\033[0m" << '\n';
 #endif
 
-				//dumpEdges(errnoEdges);
+				dumpEdges(errnoEdges);
 			}
 		}
 
 		// Skip this function if it does not return errno.
 		if (errnoEdges.empty())
 			continue;
-
+		std::cout << "err size: " << errnoEdges.size() << "\n";
 		// Traverse the CFG and find security checks for each errno.
 		findSecurityChecks(F, errnoEdges, securityChecks);
 

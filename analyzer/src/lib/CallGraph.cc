@@ -148,6 +148,7 @@ bool CallGraphPass::doModulePass(Module *M) {
 
 	// Use type-analysis to concervatively find possible targets of 
 	// indirect calls.
+	CallInst *myCI;
 	for (Module::iterator f = M->begin(), fe = M->end(); 
 			f != fe; ++f) {
 
@@ -173,17 +174,24 @@ bool CallGraphPass::doModulePass(Module *M) {
 				else {
           if (CF->empty()) {
             StringRef FName = CF->getName();
+		//std::cout << "FName: " << FName.Data << "\n";
             if (FName.startswith("SyS_"))
               FName = StringRef("sys_" + FName.str().substr(4));
+		//std::cout << "FName: " << FName.str() << "\n";
             CF = Ctx->Funcs[FName];
           }
 					FS.insert(CF);
 					Ctx->Callees[CI] = FS;
+					myCI = CI;
 					Ctx->Callers[CF].insert(CI);
 				}
 			}
 		}
 	}
+//	for (Function *myCallee : Ctx->Callees[myCI])
+//	{
+//		std::cout << "Size: " <<  myCallee->getFunctionType() << "\n";
+//	}
 
   return false;
 }
