@@ -1461,13 +1461,12 @@ void CriticalVarPass::filterDefBeforeCheck(Value *CV,
        it_def != udSet.end(); ++it_def) {
     InstructionUseDef IUD_D = *it_def;
 	//OP << "Scheck, IUD: " << *SCheckInst << " " << *IUD_D.first << "  " << IUD_D.second << "\n";
-    if (IUD_D.second == Used)
-      continue;
-
-    if (possibleUseStResult(SCheckInst, IUD_D.first) ||
-        !possibleUseStResult(IUD_D.first, SCheckInst)) {
+    //if (IUD_D.second == Used)
+      //continue;
+	
+    //OP << "possible: " << possibleUseStResult(SCheckInst, IUD_D.first) <<  "  " << !possibleUseStResult(IUD_D.first, SCheckInst) << "\n";
+    if (possibleUseStResult(SCheckInst, IUD_D.first))
       udSet.erase(it_def);
-    }
   }
 }
 
@@ -1957,7 +1956,7 @@ bool CriticalVarPass::doModulePass(Module *M) {
 			std::string str;
                         llvm::raw_string_ostream stream(str);
                         RV->print(stream);
-                        std::cout << "return value: " << str << "\n";
+                        //std::cout << "return value: " << str << "\n";
 
 #ifdef DEBUG_PRINT
 			OP << "\n== Working on function: "
@@ -2060,18 +2059,18 @@ bool CriticalVarPass::doModulePass(Module *M) {
 					printSourceCodeInfo(dyn_cast<Instruction>(CV));
 #endif
 
-				//filterDefBeforeCheck(CV, udSet, SCheck);
+				filterDefBeforeCheck(CV, udSet, SCheck);
 
-				//filterDefFromCheckedValue(CV, udSet, SCheck);
+				filterDefFromCheckedValue(CV, udSet, SCheck);
 
 				bool hasUse = false, hasDefine = false;
 				//OP << "== udSet size 2: " << udSet.size() << "\n";
 				for (std::set<InstructionUseDef>::iterator it = udSet.begin();
 						it != udSet.end(); ++it) {
+					//OP << "udset: " << *it->first << " " << it->second << "\n";
 					if (hasUse && hasDefine)
 						break;
 					InstructionUseDef IUD = *it;
-					OP << "udset: " << *IUD.first << " " << IUD.second << "\n";
 					if (IUD.second == Used)
 						hasUse = true;
 					else

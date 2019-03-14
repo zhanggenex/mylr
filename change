@@ -1,4 +1,6 @@
-CV->users() cvAddr->users()
-store: Addr==CV Addr==cvAddr
-load: Used Defined
-print: load getPointerOperand()
+1146 CV->users() cvAddr->users()
+
+1464 //if (IUD_D.second == Used)
+//continue;
+
+1468 possibleUseStResult(SCheckInst, IUD_D.first)
