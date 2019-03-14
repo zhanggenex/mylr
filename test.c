@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <time.h>
-#include "/home/hunter-zg/mylr/encoded-errno/include/uapi/asm-generic/errno-base.h"
-#include "/home/hunter-zg/mylr/encoded-errno/include/uapi/asm-generic/errno.h"
+#include "encoded-errno/include/uapi/asm-generic/errno-base.h"
+#include "encoded-errno/include/uapi/asm-generic/errno.h"
 
 int x = 1;
 

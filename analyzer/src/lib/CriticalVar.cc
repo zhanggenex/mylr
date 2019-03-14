@@ -655,7 +655,7 @@ void CriticalVarPass::findCriticalVariable(
 	if (LI) {
 		// XXX: we may need to save the memory address for future analysis.
 		// XXX: we may also need to save the type of the loaded value, pointer or non-pointer.
-		//OP << "LI: " << *SCheck << "\n";
+		//OP << "Scheck, LI, V: " << *SCheck << "  " << *LI << " " << *V  << "\n";
 		CheckToVars[SCheck].insert(LI);
 		return;
 	}
@@ -1143,7 +1143,7 @@ void CriticalVarPass::findUseDefOfCriticalVar(
 		return;
 	pSet.insert(CV);
 
-	for (User *U : cvAddr->users()) {//找到了cv的cmp语句，即if语句
+	for (User *U : cvAddr->users()) {//CV->users()只找到了cv的cmp语句，即if语句
 		if (Instruction *Inst = dyn_cast<Instruction>(U)) {
 	//	std::string str;
     	//	llvm::raw_string_ostream stream(str);
@@ -1207,7 +1207,7 @@ void CriticalVarPass::findUseDefOfCriticalVar(
 			LoadInst *LI = dyn_cast<LoadInst>(Inst);
 			if (LI) {//std::cout << "inst: 6"  << "\n";
 				// used for memory read, a critical use
-				udSet.insert(std::make_pair(Inst, Defined));
+				udSet.insert(std::make_pair(Inst, Used));
 				continue;
 			}
 
@@ -1219,7 +1219,7 @@ void CriticalVarPass::findUseDefOfCriticalVar(
 //    				llvm::raw_string_ostream stream(str);
 //    				Addr->print(stream);
 //				std::cout << "addr value:" << str << "\n"; 
-				if (Addr == cvAddr) {
+				if (Addr == CV) {
 					// Used as an address to write, a critical use ???
 					udSet.insert(std::make_pair(Inst, Used));
 					continue;
@@ -1237,7 +1237,10 @@ void CriticalVarPass::findUseDefOfCriticalVar(
 					if (checkAlias(Addr, cvAddr, aliasPtrs) &&
 							isExploitable(STI->getValueOperand(),
 								Addr, Expt, PV))
-						udSet.insert(std::make_pair(Inst, Defined));
+						{
+							//OP << "check Inst: " << *Inst << "\n";
+							udSet.insert(std::make_pair(Inst, Defined));
+						}
 				}
 #endif
 
@@ -2057,9 +2060,9 @@ bool CriticalVarPass::doModulePass(Module *M) {
 					printSourceCodeInfo(dyn_cast<Instruction>(CV));
 #endif
 
-				filterDefBeforeCheck(CV, udSet, SCheck);
+				//filterDefBeforeCheck(CV, udSet, SCheck);
 
-				filterDefFromCheckedValue(CV, udSet, SCheck);
+				//filterDefFromCheckedValue(CV, udSet, SCheck);
 
 				bool hasUse = false, hasDefine = false;
 				//OP << "== udSet size 2: " << udSet.size() << "\n";
@@ -2068,6 +2071,7 @@ bool CriticalVarPass::doModulePass(Module *M) {
 					if (hasUse && hasDefine)
 						break;
 					InstructionUseDef IUD = *it;
+					OP << "udset: " << *IUD.first << " " << IUD.second << "\n";
 					if (IUD.second == Used)
 						hasUse = true;
 					else
@@ -2095,8 +2099,8 @@ bool CriticalVarPass::doModulePass(Module *M) {
 					OP << '\n';
 					if (IUD.second != Used)
 					{
-						LoadInst *LI = dyn_cast<LoadInst>(Inst);
-						OP << "    Defined by " << *LI->getPointerOperand() <<  "\n";
+						//LoadInst *LI = dyn_cast<LoadInst>(Inst);
+						OP << "    Defined by " << *Inst <<  "\n";
 					}
 					else
 					{
