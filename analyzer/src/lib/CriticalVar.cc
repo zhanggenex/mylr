@@ -19,7 +19,7 @@
 // don't check critical function
 #define VARIABLE_ONLY 1
 
-#define ENABLE_SOURCE_TRACKING 0
+#define ENABLE_SOURCE_TRACKING 1
 
 // Number of addresses to track for each identified
 // modification of a critical variable
@@ -1149,7 +1149,7 @@ void CriticalVarPass::findUseDefOfCriticalVar(
     	//	llvm::raw_string_ostream stream(str);
     	//	Inst->print(stream);
 	//	std::cout << "inst: " << str << "\n";
-		//OP << "User, Inst: "<< *U << "  "<< *Inst << "\n";
+		//OP << "User, size: "<< *U << "  "<< udSet.size() << "\n";
 			/* For the following types of instructions, we continue to 
 				 find their uses. */
 			// XXX: typical use instructions:  BinaryOperator, CallInst,
@@ -1385,13 +1385,19 @@ void CriticalVarPass::findUseDefOfCriticalVar(
 }
 
 static void printSourceCode(unsigned lineno, std::string &src_file) {
-	std::ifstream sourcefile(src_file);
+	std::ifstream fin(src_file);
+	if(!fin.is_open())
+	{
+		cerr<<"无法打开文件 "<<src_file<<endl;
+		exit(0);
+	}
 
 	unsigned cl = 0;
 
 	while(1) {
 		std::string line;
-		std::getline(sourcefile, line);
+		std::getline(fin, line);
+		//OP << "line: " << line << "\n";
 		cl++;
 		if (cl != lineno)
 			continue;
@@ -1399,10 +1405,11 @@ static void printSourceCode(unsigned lineno, std::string &src_file) {
 			line.erase(line.begin());
 		OP << "                 ["
 			<< "\033[34m" << "Src  Code" << "\033[0m" << "] "
-			<< src_file.replace(0, 19, "") << ":" << lineno << ": "
+			<< src_file << ":" << lineno << ": "
 			<< "\033[35m" << line << "\033[0m" <<'\n';
 		break;
 	}
+	fin.close();
 }
 
 /// Print out source code information to facilitate manual analyses.
@@ -1415,13 +1422,21 @@ void CriticalVarPass::printSourceCodeInfo(Instruction *I) {
 		return;
 
 	DILocation *Loc = dyn_cast<DILocation>(N);
+	//OP << "LOC: " << *Loc << "\n";
 	if (!Loc || Loc->getLine() < 1)
 		return;
 
 	std::string FN = Loc->getFilename().str();
+	//OP << "file name: " << FN << "\n";
 	if (FN.find(LINUX_BC_DIR) == 0) {
 		FN.replace(0, strlen(LINUX_BC_DIR), LINUX_SOURCE_DIR);
 	}
+	uid_t userid;
+	struct passwd* pwd;
+	userid=getuid();
+	pwd=getpwuid(userid);
+	std::string ss = pwd->pw_name;
+	FN = "/home/" + ss + "/mylr/" + FN; 
 	printSourceCode(Loc->getLine(), FN);
 }
 
@@ -2073,7 +2088,7 @@ bool CriticalVarPass::doModulePass(Module *M) {
 					InstructionUseDef IUD = *it;
 					if (IUD.second == Used)
 						hasUse = true;
-					else
+					else if (IUD.second == Defined)
 						hasDefine = true;
 				}
 

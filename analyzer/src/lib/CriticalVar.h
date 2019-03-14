@@ -4,6 +4,8 @@
 #include <llvm/Analysis/BasicAliasAnalysis.h>
 
 #include "LRSan.h"
+#include <unistd.h>  
+#include <pwd.h> 
 
 class CriticalVarPass : public IterativeModulePass {
 
