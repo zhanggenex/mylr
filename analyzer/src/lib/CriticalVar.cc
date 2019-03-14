@@ -59,17 +59,17 @@ bool CriticalVarPass::isValueErrno(Value *V) {
 
 	// The value is a constant integer.
 	ConstantInt *CI = dyn_cast<ConstantInt>(V);
-//	std::string str;
-//    	llvm::raw_string_ostream stream(str);
-//    	CI->print(stream);
+	std::string str;
+    	llvm::raw_string_ostream stream(str);
+    	CI->print(stream);
 	if (CI && (CI->getType()->getBitWidth() == 32 ||
 				CI->getType()->getBitWidth() == 64)) {
 		const APInt &value = CI->getValue();
-		std::string str;
-    		llvm::raw_string_ostream stream(str);
-		value.print(stream, 0);
+//		std::string str;
+//    		llvm::raw_string_ostream stream(str);
+//		value.print(stream, 0);
 		//std::cout << "const value: " << CI->getValue().toString() << "\n";
-		std::cout << "const value: " << str << "\n";
+		//std::cout << "iserrno: " << is_errno(-value) << "\n";
 		// The value is an errno (negative or positive).
 		if (is_errno(-value) || is_errno(value))
 			return true;
@@ -589,7 +589,7 @@ void CriticalVarPass::findSecurityChecks(
 			else
 				++NumMayErr;
 		}
-		std::cout << "must may return " << NumMustErr << "   " << NumMayErr << "\n";
+		//std::cout << "must may return " << NumMustErr << "   " << NumMayErr << "\n";
 
 		// not a security check
 		if (!(NumMustErr && NumMayErr)) {
@@ -625,6 +625,7 @@ void CriticalVarPass::findCriticalVariable(
 		Function *F, Value *SCheck, Value *V,
     std::map<Value *, std::set<Value *>> &CheckToVars,
 		std::set<Value *> &PSet) {
+	//OP << "V: "<< *V << "\n"; 
 
 	if (isConstant(V))
 		return;
@@ -654,6 +655,7 @@ void CriticalVarPass::findCriticalVariable(
 	if (LI) {
 		// XXX: we may need to save the memory address for future analysis.
 		// XXX: we may also need to save the type of the loaded value, pointer or non-pointer.
+		//OP << "LI: " << *SCheck << "\n";
 		CheckToVars[SCheck].insert(LI);
 		return;
 	}
@@ -1037,6 +1039,11 @@ void CriticalVarPass::findUseDefFromCVAddr(
 		StoreInst *SI = dyn_cast<StoreInst>(Inst);
 		if (SI) {
 			CaV = SI->getPointerOperand();
+		//	std::string str;
+    		//	llvm::raw_string_ostream stream(str);
+    		//	CaV->print(stream);
+		//	std::cout << "CaV: " << str << "\n";
+		//	std::cout << "checkalias: " << checkAlias(cvAddr, CaV, aliasPtrs) << "\n";
 			if (!checkAlias(cvAddr, CaV, aliasPtrs))
 				continue;
 
@@ -1046,6 +1053,7 @@ void CriticalVarPass::findUseDefFromCVAddr(
 			std::set<Value *> PV;
 			Expt.clear();
 			PV.clear();
+			//std::cout << "isexploitable: " << isExploitable(SI->getValueOperand(), SI->getPointerOperand(), Expt, PV) << "\n";
 			if (isExploitable(SI->getValueOperand(),
 						SI->getPointerOperand(),
 						Expt, PV))
@@ -1135,8 +1143,13 @@ void CriticalVarPass::findUseDefOfCriticalVar(
 		return;
 	pSet.insert(CV);
 
-	for (User *U : CV->users()) {
+	for (User *U : cvAddr->users()) {//找到了cv的cmp语句，即if语句
 		if (Instruction *Inst = dyn_cast<Instruction>(U)) {
+	//	std::string str;
+    	//	llvm::raw_string_ostream stream(str);
+    	//	Inst->print(stream);
+	//	std::cout << "inst: " << str << "\n";
+		//OP << "User, Inst: "<< *U << "  "<< *Inst << "\n";
 			/* For the following types of instructions, we continue to 
 				 find their uses. */
 			// XXX: typical use instructions:  BinaryOperator, CallInst,
@@ -1149,28 +1162,28 @@ void CriticalVarPass::findUseDefOfCriticalVar(
 			// InsertValueInst, ShuffleVectorInst, and CastInst.
 
 			SelectInst *SI = dyn_cast<SelectInst>(Inst);
-			if (SI) {
+			if (SI) {//std::cout << "inst:1 "  << "\n";
 				Value *V = dyn_cast<Value>(SI);
 				findUseDefOfCriticalVar(V, cvAddr, pSet, udSet, aliasPtrs);
 				continue;
 			}
 
 			PHINode *PN = dyn_cast<PHINode>(Inst);
-			if (PN) {
+			if (PN) {//std::cout << "inst:2 "  << "\n";
 				Value *V = dyn_cast<Value>(PN);
 				findUseDefOfCriticalVar(V, cvAddr, pSet, udSet, aliasPtrs);
 				continue;
 			}
 
 			CastInst *CI = dyn_cast<CastInst>(Inst);
-			if (CI) {
+			if (CI) {//std::cout << "inst: 3"  << "\n";
 				Value *V = dyn_cast<Value>(CI);
 				findUseDefOfCriticalVar(V, cvAddr, pSet, udSet, aliasPtrs);
 				continue;
 			}
 
 			GetElementPtrInst *GEP = dyn_cast<GetElementPtrInst>(Inst);
-			if (GEP) {
+			if (GEP) {//std::cout << "inst: 4"  << "\n";
 				// If used as an index, mark it as a critical use.
 				for (Value *Index : make_range(GEP->idx_begin(),
 							GEP->idx_end())) {
@@ -1183,7 +1196,7 @@ void CriticalVarPass::findUseDefOfCriticalVar(
 			}
 
 			BinaryOperator *BO = dyn_cast<BinaryOperator>(Inst);
-			if (BO) {
+			if (BO) {//std::cout << "inst: 5"  << "\n";
 				// The result of BO may be used for modification,
 				// we should continue to track.
 				Value *V = dyn_cast<Value>(BO);
@@ -1192,16 +1205,21 @@ void CriticalVarPass::findUseDefOfCriticalVar(
 			}
 
 			LoadInst *LI = dyn_cast<LoadInst>(Inst);
-			if (LI) {
+			if (LI) {//std::cout << "inst: 6"  << "\n";
 				// used for memory read, a critical use
-				udSet.insert(std::make_pair(Inst, Used));
+				udSet.insert(std::make_pair(Inst, Defined));
 				continue;
 			}
 
 			StoreInst *STI = dyn_cast<StoreInst>(Inst);
-			if (STI) {
+			if (STI) {//std::cout << "inst: 7"  << "\n";
 				Value *Addr = STI->getPointerOperand();
-				if (Addr == CV) {
+				//OP << "Addr, CV, cvAddr: " << *Addr << "  " << *CV << "  " << *cvAddr << "\n";
+//				std::string str;
+//    				llvm::raw_string_ostream stream(str);
+//    				Addr->print(stream);
+//				std::cout << "addr value:" << str << "\n"; 
+				if (Addr == cvAddr) {
 					// Used as an address to write, a critical use ???
 					udSet.insert(std::make_pair(Inst, Used));
 					continue;
@@ -1232,7 +1250,7 @@ void CriticalVarPass::findUseDefOfCriticalVar(
 			}
 
 			ExtractElementInst *EEI = dyn_cast<ExtractElementInst>(Inst);
-			if (EEI) {
+			if (EEI) {//std::cout << "inst: 8"  << "\n";
 				Value *V = dyn_cast<Value>(EEI);
 				// TODO
 				findUseDefOfCriticalVar(V, cvAddr, pSet, udSet, aliasPtrs);
@@ -1240,7 +1258,7 @@ void CriticalVarPass::findUseDefOfCriticalVar(
 			}
 
 			InsertElementInst *IEI = dyn_cast<InsertElementInst>(Inst);
-			if (IEI) {
+			if (IEI) {//std::cout << "inst: 9"  << "\n";
 				Value *V = dyn_cast<Value>(IEI);
 				// TODO
 				findUseDefOfCriticalVar(V, cvAddr, pSet, udSet, aliasPtrs);
@@ -1248,7 +1266,7 @@ void CriticalVarPass::findUseDefOfCriticalVar(
 			}
 
 			InsertValueInst *IVI = dyn_cast<InsertValueInst>(Inst);
-			if (IVI) {
+			if (IVI) {//std::cout << "inst: 10"  << "\n";
 				// TODO
 				//Value *V = dyn_cast<Value>(IVI);
 				//findUseDefOfCriticalVar(V, pSet, udSet);
@@ -1256,7 +1274,7 @@ void CriticalVarPass::findUseDefOfCriticalVar(
 			}
 
 			ShuffleVectorInst *SVI = dyn_cast<ShuffleVectorInst>(Inst);
-			if (SVI) {
+			if (SVI) {//std::cout << "inst: 11"  << "\n";
 				// TODO
 				//Value *V = dyn_cast<Value>(SVI);
 				//findUseDefOfCriticalVar(V, pSet, udSet);
@@ -1264,7 +1282,7 @@ void CriticalVarPass::findUseDefOfCriticalVar(
 			}
 
 			ExtractValueInst *EVI = dyn_cast<ExtractValueInst>(Inst);
-			if (EVI) {
+			if (EVI) {//std::cout << "inst: 12"  << "\n";
 				// TODO
 				//Value *V = dyn_cast<Value>(EVI);
 				//findUseDefOfCriticalVar(V, pSet, udSet);
@@ -1272,14 +1290,14 @@ void CriticalVarPass::findUseDefOfCriticalVar(
 			}
 
 			ReturnInst *RI = dyn_cast<ReturnInst>(Inst);
-			if (RI) {
+			if (RI) {//std::cout << "inst:13 "  << "\n";
 				// TODO: continue tracking caller?
 				continue;
 			}
 
 			CallInst *CLI = dyn_cast<CallInst>(Inst);
 			InvokeInst *II = dyn_cast<InvokeInst>(Inst);
-			if (CLI || II) {
+			if (CLI || II) {//std::cout << "inst: 14"  << "\n";
 				Value *CaV;
 				unsigned numArgCall;
 				Value *Arg0;
@@ -1357,8 +1375,8 @@ void CriticalVarPass::findUseDefOfCriticalVar(
 			}
 
 			// TODO: more analyses are required.
-			//OP << "== Warning: unsupported LLVM IR when handling uses/defines";
-			//OP << *Inst << "\n";
+			OP << "== Warning: unsupported LLVM IR when handling uses/defines";
+			OP << *Inst << "\n";
 		}
 	}
 }
@@ -1439,6 +1457,7 @@ void CriticalVarPass::filterDefBeforeCheck(Value *CV,
   for (std::set<InstructionUseDef>::iterator it_def = udSet.begin();
        it_def != udSet.end(); ++it_def) {
     InstructionUseDef IUD_D = *it_def;
+	//OP << "Scheck, IUD: " << *SCheckInst << " " << *IUD_D.first << "  " << IUD_D.second << "\n";
     if (IUD_D.second == Used)
       continue;
 
@@ -1957,7 +1976,7 @@ bool CriticalVarPass::doModulePass(Module *M) {
 		// Skip this function if it does not return errno.
 		if (errnoEdges.empty())
 			continue;
-		std::cout << "err size: " << errnoEdges.size() << "\n";
+		//std::cout << "err size: " << errnoEdges.size() << "\n";
 		// Traverse the CFG and find security checks for each errno.
 		findSecurityChecks(F, errnoEdges, securityChecks);
 
@@ -1995,7 +2014,7 @@ bool CriticalVarPass::doModulePass(Module *M) {
 				it = CheckToVars.begin(), eit = CheckToVars.end();
 				it != eit; ++it) {
 			Value *SCheck = it->first;
-			std::set<Value *> cvSet = it->second;
+			std::set<Value *> cvSet = it->second;//dyn_cast只找到了cmp指令上一个load
 
 			// Find defs (motifications) to the critical variables
 			for (std::set<Value *>::iterator cit = cvSet.begin();
@@ -2013,8 +2032,14 @@ bool CriticalVarPass::doModulePass(Module *M) {
 				// Handle critical variables loaded from memory.
 				try {
 					LoadInst *LI = dyn_cast<LoadInst>(CV);
+					//OP << "LI, CV: " << *LI << "   "<< *CV << "\n";
 					if (LI) {
 						cvAddr = LI->getPointerOperand();
+					//	std::string str;
+    					//	llvm::raw_string_ostream stream(str);
+    					//	CV->print(stream);
+					//	std::cout << "cvaddr: " << str << "\n";
+						//OP << "cvAddr: " << *cvAddr << "\n"; 
 						findUseDefFromCVAddr(F, cvAddr, pSet, udSet, aliasPtrs);
 					}
 
@@ -2037,6 +2062,7 @@ bool CriticalVarPass::doModulePass(Module *M) {
 				filterDefFromCheckedValue(CV, udSet, SCheck);
 
 				bool hasUse = false, hasDefine = false;
+				//OP << "== udSet size 2: " << udSet.size() << "\n";
 				for (std::set<InstructionUseDef>::iterator it = udSet.begin();
 						it != udSet.end(); ++it) {
 					if (hasUse && hasDefine)
@@ -2049,6 +2075,7 @@ bool CriticalVarPass::doModulePass(Module *M) {
 				}
 
 				cuc_counter++;
+				//OP << "cuc, hasdefine: "<< cuc_counter << " " << hasDefine << "\n";
 
 				if (!hasDefine)
 					continue;
@@ -2065,10 +2092,17 @@ bool CriticalVarPass::doModulePass(Module *M) {
 						it != udSet.end(); ++it) {
 					InstructionUseDef IUD = *it;
 					Instruction *Inst = IUD.first;
+					OP << '\n';
+					if (IUD.second != Used)
+					{
+						LoadInst *LI = dyn_cast<LoadInst>(Inst);
+						OP << "    Defined by " << *LI->getPointerOperand() <<  "\n";
+					}
+					else
+					{
+						OP << "    Used by    " << *Inst << "\n";
+					}
 
-					OP << '\n' 
-						<< ((IUD.second == Used) ? "    Used by    " : "    Defined by ")
-						<< *Inst << '\n';
 					if (Inst->getFunction()) {
 						OP << "                 ["
 							<< "\033[34m" << "Func Name" << "\033[0m" << "] "

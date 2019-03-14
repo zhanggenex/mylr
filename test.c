@@ -1,32 +1,29 @@
 #include <stdio.h>
-#include <errno.h>
+#include <time.h>
+#include "/home/hunter-zg/mylr/encoded-errno/include/uapi/asm-generic/errno-base.h"
+#include "/home/hunter-zg/mylr/encoded-errno/include/uapi/asm-generic/errno.h"
+
+int x = 1;
 
 int b()
 {
-	FILE *fp = NULL;
-	fp = fopen("./test.c", "r");
-	if ( fp == NULL)
+	if ( x > 2)
 	{	
-		/*if( x < 10)
-		{
-			c(2);
-		
-			if ( x < 100)	
-				d(3);
-			return 1;
-		}
-		if(x < 2)
-			printf("1\n");
-		return 1;*/
+		int c = x;
 	}
 	else 
 	{
-		return 20;
+		return ENOSYS;
 	}
 }
 
 int main()
 {
+	time_t start, stop;
+	start = time(NULL);
 	b();
+	stop = time(NULL);
+	x = stop -start;
+	int a = x;
 	return 1;
 }
