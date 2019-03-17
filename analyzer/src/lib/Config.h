@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include <set>
 #include <unordered_set>
+#include <string>
+#include <iostream> 
 
 //
 // Configurations for compilation.
@@ -19,11 +21,17 @@
 // magic code for identifying error codes
 #define ERRNO_PREFIX 0x4cedb000
 #define ERRNO_MASK   0xfffff000
-#define is_errno(x) (((x) & ERRNO_MASK) == ERRNO_PREFIX)
+//#define is_errno(x) (((x) & ERRNO_MASK) == ERRNO_PREFIX)
+#define is_errno(x)  (((x) >= 1) && ((x) <= 133))
 
 // specify directories of the linux source code and bitcode files
-#define LINUX_SOURCE_DIR "/home/kjlu/projects/kernel-analysis/build-linux/code/srcs/linux-stable-4.16.0"
-#define LINUX_BC_DIR "/home/kjlu/projects/kernel-analysis/compile-kernel/code/bcfs/linux-stable-4.20.0"
+#define LINUX_SOURCE_DIR "/home/hunter-zg/mylr"
+#define LINUX_BC_DIR "/home/hunter-zg/mylr"
+
+//bool is_errno(int x)
+//{
+//	return ( ((x) >= 1) && ((x) <= 133) );
+//}
 
 // Setup sinking functions here.
 static void SetSinkFuncs(

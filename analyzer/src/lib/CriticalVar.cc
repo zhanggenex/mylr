@@ -59,19 +59,26 @@ bool CriticalVarPass::isValueErrno(Value *V) {
 
 	// The value is a constant integer.
 	ConstantInt *CI = dyn_cast<ConstantInt>(V);
-	std::string str;
-    	llvm::raw_string_ostream stream(str);
-    	CI->print(stream);
+//	std::string str;
+//    	llvm::raw_string_ostream stream(str);
+//    	CI->print(stream);
 	if (CI && (CI->getType()->getBitWidth() == 32 ||
 				CI->getType()->getBitWidth() == 64)) {
 		const APInt &value = CI->getValue();
 //		std::string str;
 //    		llvm::raw_string_ostream stream(str);
 //		value.print(stream, 0);
-		//std::cout << "const value: " << CI->getValue().toString() << "\n";
+		//std::cout << "const value: " << *CI->getValue().getRawData() << "\n";
 		//std::cout << "iserrno: " << is_errno(-value) << "\n";
 		// The value is an errno (negative or positive).
-		if (is_errno(-value) || is_errno(value))
+		//char ms[100];
+		//std::sprintf(ms, OP << "value: " << value << "\n");
+		//int myv = std::atoi(*CI->getValue().getRawData().c_str());
+		std::stringstream ss;
+		ss << *CI->getValue().getRawData();
+		int myv;
+		ss >> myv;
+		if (is_errno(-myv) || is_errno(myv))
 			return true;
 	}
 
@@ -311,7 +318,7 @@ void CriticalVarPass::recurCheckValueErrno(
 					std::string str;
     					llvm::raw_string_ostream stream(str);
     					SVO->print(stream);
-					std::cout << "store value: " << str << "\n";
+					//std::cout << "store value: " << str << "\n";
 					//std::cout << "isconst is error: " << isConstant(SVO) << "   " << isValueErrno(SVO) << "\n";
 					if (isConstant(SVO)) {
 						if (isValueErrno(SVO)) {
@@ -504,8 +511,8 @@ void CriticalVarPass::recurCheckValueErrno(
 
 	// TODO: support more LLVM IR types.
 #ifdef DEBUG_PRINT
-	OP << "== Warning: unsupported LLVM IR (i32 x ?):"
-		<< *V << '\n';
+	//OP << "== Warning: unsupported LLVM IR (i32 x ?):"
+		//<< *V << '\n';
 #endif
 }
 
@@ -532,9 +539,9 @@ void CriticalVarPass::checkValueErrno(Function *F,
 	EV.push_back(std::make_pair(std::make_pair((TerminatorInst *)NULL, 0), V));
 
 #ifdef DEBUG_PRINT
-	if (EV.empty())
-		OP << "== Warning: unsupported LLVM IR:"
-			<< *V << '\n';
+	//if (EV.empty())
+	//	OP << "== Warning: unsupported LLVM IR:"
+	//		<< *V << '\n';
 #endif
 
 	// Iterate each value in the list.
@@ -614,7 +621,7 @@ void CriticalVarPass::findSecurityChecks(
 		if (!Cond)
 			OP << "Warnning: cannot find the check.\n";
 		else {
-			OP << "Condition of the check is: " << *Cond << "\n";
+			//OP << "Condition of the check is: " << *Cond << "\n";
 			securityChecks.insert(Cond);
 		}
 	}
@@ -636,7 +643,7 @@ void CriticalVarPass::findCriticalVariable(
 
 	if (isFunctionParameter(V, F)) {
 #ifdef DEBUG_PRINT
-		OP << "== A critical variable is identified (function parameter):\n";
+		OP << "== A critical variable is identified (function parameter): ";
 		OP << "\033[31m" << *V << "\033[0m" << "\n";
 #endif
 		CheckToVars[SCheck].insert(V);
@@ -713,8 +720,8 @@ void CriticalVarPass::findCriticalVariable(
 
 	// TODO: more analyses are required.
 #ifdef DEBUG_PRINT
-	OP << "== Warning: unsupported LLVM IR when find critical variables/functions:";
-	OP << "\033[31m" << *V << "\033[0m\n";
+	//OP << "== Warning: unsupported LLVM IR when find critical variables/functions:";
+	//OP << "\033[31m" << *V << "\033[0m\n";
 #endif
 }
 
@@ -1143,7 +1150,7 @@ void CriticalVarPass::findUseDefOfCriticalVar(
 		return;
 	pSet.insert(CV);
 
-	for (User *U : cvAddr->users()) {//CV->users()只找到了cv的cmp语句，即if语句
+	for (User *U : CV->users()) {//CV->users()只找到了cv的cmp语句，即if语句
 		if (Instruction *Inst = dyn_cast<Instruction>(U)) {
 	//	std::string str;
     	//	llvm::raw_string_ostream stream(str);
@@ -1378,8 +1385,8 @@ void CriticalVarPass::findUseDefOfCriticalVar(
 			}
 
 			// TODO: more analyses are required.
-			OP << "== Warning: unsupported LLVM IR when handling uses/defines";
-			OP << *Inst << "\n";
+			//OP << "== Warning: unsupported LLVM IR when handling uses/defines";
+			//OP << *Inst << "\n";
 		}
 	}
 }
@@ -1403,7 +1410,7 @@ static void printSourceCode(unsigned lineno, std::string &src_file) {
 			continue;
 		while(line[0] == ' ' || line[0] == '\t')
 			line.erase(line.begin());
-		OP << "                 ["
+		OP << "["
 			<< "\033[34m" << "Src  Code" << "\033[0m" << "] "
 			<< src_file << ":" << lineno << ": "
 			<< "\033[35m" << line << "\033[0m" <<'\n';
@@ -1436,7 +1443,7 @@ void CriticalVarPass::printSourceCodeInfo(Instruction *I) {
 	userid=getuid();
 	pwd=getpwuid(userid);
 	std::string ss = pwd->pw_name;
-	FN = "/home/" + ss + "/mylr/" + FN; 
+	FN = "/home/" + ss + "/mylr/" +"bison-3.0.5/" + FN; 
 	printSourceCode(Loc->getLine(), FN);
 }
 
@@ -1476,11 +1483,11 @@ void CriticalVarPass::filterDefBeforeCheck(Value *CV,
        it_def != udSet.end(); ++it_def) {
     InstructionUseDef IUD_D = *it_def;
 	//OP << "Scheck, IUD: " << *SCheckInst << " " << *IUD_D.first << "  " << IUD_D.second << "\n";
-    //if (IUD_D.second == Used)
-      //continue;
+    if (IUD_D.second == Used)
+	    continue;
 	
     //OP << "possible: " << possibleUseStResult(SCheckInst, IUD_D.first) <<  "  " << !possibleUseStResult(IUD_D.first, SCheckInst) << "\n";
-    if (possibleUseStResult(SCheckInst, IUD_D.first))
+    if (possibleUseStResult(SCheckInst, IUD_D.first) || !possibleUseStResult(IUD_D.first, SCheckInst) )
       udSet.erase(it_def);
   }
 }
@@ -1686,8 +1693,8 @@ Value *CriticalVarPass::trackSrcOfVal(
 		return NULL;
 	}
 
-	OP << "== Warning: unsupported LLVM IR in trackSrcOfVal:"
-		<< *V << "\n";
+	//OP << "== Warning: unsupported LLVM IR in trackSrcOfVal:"
+		//<< *V << "\n";
 
 	return NULL;
 }
@@ -1974,19 +1981,19 @@ bool CriticalVarPass::doModulePass(Module *M) {
                         //std::cout << "return value: " << str << "\n";
 
 #ifdef DEBUG_PRINT
-			OP << "\n== Working on function: "
-				<< "\033[32m" << F->getName() << "\033[0m" << '\n';
+			//OP << "\n== Working on function: "
+				//<< "\033[32m" << F->getName() << "\033[0m" << '\n';
 #endif
 
 			checkReturnValue(F, RI->getParent(), RV, errnoEdges);
 
 			if (errnoEdges.size() > 0) {
 #ifdef DEBUG_PRINT
-				OP << "\n== An errno may be returned in function "
-					<< "\033[32m" << F->getName() << "\033[0m" << '\n';
+				//OP << "\n== An errno may be returned in function "
+					//<< "\033[32m" << F->getName() << "\033[0m" << '\n';
 #endif
 
-				dumpEdges(errnoEdges);
+				//dumpEdges(errnoEdges);
 			}
 		}
 
@@ -2005,7 +2012,7 @@ bool CriticalVarPass::doModulePass(Module *M) {
 		//OP << "== number of security checks: " << sc_counter << "\n";
 
 #ifdef DEBUG_PRINT
-		OP << "== number of security checks: " << securityChecks.size() << "\n";
+		OP << "\n\n\n------------------------------------\n== number of security checks: " << securityChecks.size() << "\n";
 		for (std::set<Value *>::iterator it = securityChecks.begin(),
 				ie = securityChecks.end(); it != ie; ++it) {
 			Value *SC = *it;
@@ -2069,7 +2076,7 @@ bool CriticalVarPass::doModulePass(Module *M) {
 
 #ifdef DEBUG_PRINT
 				OP << "== CV:" << *CV << '\n';
-				OP << "== udSet size: " << udSet.size() << "\n";
+				//OP << "== udSet size: " << udSet.size() << "\n";
 				if (dyn_cast<Instruction>(CV))
 					printSourceCodeInfo(dyn_cast<Instruction>(CV));
 #endif
