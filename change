@@ -4,3 +4,8 @@
 //continue;
 
 1468 possibleUseStResult(SCheckInst, IUD_D.first)
+
+2085                         //      filDerDefBeforeCheckeCV, udSet, SCheck);   
+2087                         //      filterDefFromCheckedValue(CV, udSet, SCheck);
+
+2089                         //      bool hasUse = false, hasDefine = false;

@@ -1149,8 +1149,14 @@ void CriticalVarPass::findUseDefOfCriticalVar(
 	if (pSet.count(CV) != 0)
 		return;
 	pSet.insert(CV);
-
-	for (User *U : CV->users()) {//CV->users()只找到了cv的cmp语句，即if语句
+	
+	//OP << "cvAddr, CV: " << cvAddr << "  " << *CV  << "\n";
+	Value *myv;
+	if ( cvAddr == NULL )
+		myv = CV;
+	else
+		myv = cvAddr;
+	for (User *U : myv->users()) {//CV->users()只找到了cv的cmp语句，即if语句
 		if (Instruction *Inst = dyn_cast<Instruction>(U)) {
 	//	std::string str;
     	//	llvm::raw_string_ostream stream(str);
@@ -1483,12 +1489,13 @@ void CriticalVarPass::filterDefBeforeCheck(Value *CV,
        it_def != udSet.end(); ++it_def) {
     InstructionUseDef IUD_D = *it_def;
 	//OP << "Scheck, IUD: " << *SCheckInst << " " << *IUD_D.first << "  " << IUD_D.second << "\n";
-    if (IUD_D.second == Used)
-	    continue;
+//    if (IUD_D.second == Used)
+//	    continue;
 	
     //OP << "possible: " << possibleUseStResult(SCheckInst, IUD_D.first) <<  "  " << !possibleUseStResult(IUD_D.first, SCheckInst) << "\n";
-    if (possibleUseStResult(SCheckInst, IUD_D.first) || !possibleUseStResult(IUD_D.first, SCheckInst) )
-      udSet.erase(it_def);
+    //if (possibleUseStResult(SCheckInst, IUD_D.first) || !possibleUseStResult(IUD_D.first, SCheckInst) )
+	if (possibleUseStResult(SCheckInst, IUD_D.first))
+		udSet.erase(it_def);
   }
 }
 
@@ -2017,7 +2024,7 @@ bool CriticalVarPass::doModulePass(Module *M) {
 				ie = securityChecks.end(); it != ie; ++it) {
 			Value *SC = *it;
 			OP << "\n== Security check: " << *SC << "\n";
-			printSourceCodeInfo(dyn_cast<Instruction>(SC));
+			//printSourceCodeInfo(dyn_cast<Instruction>(SC));
 		}
 #endif
 
@@ -2081,31 +2088,32 @@ bool CriticalVarPass::doModulePass(Module *M) {
 					printSourceCodeInfo(dyn_cast<Instruction>(CV));
 #endif
 
-				filterDefBeforeCheck(CV, udSet, SCheck);
+			//	filDerDefBeforeCheck(CV, udSet, SCheck);
 
-				filterDefFromCheckedValue(CV, udSet, SCheck);
+			//	filterDefFromCheckedValue(CV, udSet, SCheck);
 
-				bool hasUse = false, hasDefine = false;
-				//OP << "== udSet size 2: " << udSet.size() << "\n";
-				for (std::set<InstructionUseDef>::iterator it = udSet.begin();
-						it != udSet.end(); ++it) {
-					//OP << "udset: " << *it->first << " " << it->second << "\n";
-					if (hasUse && hasDefine)
-						break;
-					InstructionUseDef IUD = *it;
-					if (IUD.second == Used)
-						hasUse = true;
-					else if (IUD.second == Defined)
-						hasDefine = true;
-				}
+			//	bool hasUse = false, hasDefine = false;
+			//	//OP << "== udSet size 2: " << udSet.size() << "\n";
+			//	for (std::set<InstructionUseDef>::iterator it = udSet.begin();
+			//			it != udSet.end(); ++it) {
+			//		//OP << "udset: " << *it->first << " " << it->second << "\n";
+			//		if (hasUse && hasDefine)
+			//			break;
+			//		InstructionUseDef IUD = *it;
+			//		if (IUD.second == Used)
+			//			hasUse = true;
+			//		else if (IUD.second == Defined)
+			//			hasDefine = true;
+			//	}
 
-				cuc_counter++;
-				//OP << "cuc, hasdefine: "<< cuc_counter << " " << hasDefine << "\n";
+			//	cuc_counter++;
+			//	//OP << "cuc, hasdefine: "<< cuc_counter << " " << hasDefine << "\n";
 
-				if (!hasDefine)
-					continue;
+			//	if (!hasDefine)
+			//		continue;
 
-				lcc_counter++;
+			//	lcc_counter++;
+			//	获取所有对criticalvaribal的修改，认为所有修改都是违法的，扩大范围
 
 				OP << "\n== Critical Variable [" << lcc_counter << " / "
 					<< cuc_counter  << "]: " << "\033[33m" << *CV << "\033[0m"
@@ -2113,9 +2121,11 @@ bool CriticalVarPass::doModulePass(Module *M) {
 				printSourceCodeInfo(CV);
 				OP << "== Security Check: " << "\033[33m" << *SCheck << "\033[0m\n";
 				printSourceCodeInfo(SCheck);
+				//OP << "== udSet size: " << udSet.size() << "\n";
 				for (std::set<InstructionUseDef>::iterator it = udSet.begin();
 						it != udSet.end(); ++it) {
 					InstructionUseDef IUD = *it;
+					OP << "IUD: " << *it->first << " " << it->second << "\n";
 					Instruction *Inst = IUD.first;
 					OP << '\n';
 					if (IUD.second != Used)
