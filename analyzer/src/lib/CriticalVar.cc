@@ -1949,6 +1949,29 @@ bool CriticalVarPass::doFinalization(Module *M) {
 }
 
 bool CriticalVarPass::doModulePass(Module *M) {
+	std::set<std::string>myfunc;
+	myfunc.clear();
+	std::ofstream fout("my.cfg");
+	if ( !fout )
+	{
+		OP << "Write my.cfg failed!";
+	}
+	fout << "{\n"
+		<<"\"target\": \"linux/amd64\",\n"
+		<< "\"http\": \"127.0.0.1:56741\",\n"
+		<< "\"workdir\": \"/home/hunter-zg/gopath/src/github.com/google/syzkaller/workdir\",\n"
+		<< "\"kernel_obj\": \"/home/hunter-zg/download/linux-5.0-llvm\",\n"
+		<< "\"image\": \"/home/hunter-zg/gopath/src/github.com/google/syzkaller/tools/stretch.img\",\n"
+		<< "\"sshkey\": \"/home/hunter-zg/gopath/src/github.com/google/syzkaller/tools/stretch.id_rsa\",\n"
+		<< "\"syzkaller\": \"/home/hunter-zg/gopath/src/github.com/google/syzkaller\",\n"
+		<< "\"procs\": 8,\n"
+		<< "\"type\": \"qemu\",\n"
+		<< "\"vm\": {\n"
+		<< "\"count\": 4,\n"
+		<< "\"kernel\": \"/home/hunter-zg/download/linux-5.0-llvm/arch/x86/boot/bzImage\",\n"
+		<< "\"cpu\": 2,\n"
+		<< "\"mem\": 2048\n"
+		<< "},\n";
 	for(Module::iterator f = M->begin(), fe = M->end();
 			f != fe; ++f) {
 		Function *F = &*f;
@@ -2088,7 +2111,7 @@ bool CriticalVarPass::doModulePass(Module *M) {
 					printSourceCodeInfo(dyn_cast<Instruction>(CV));
 #endif
 
-			//	filDerDefBeforeCheck(CV, udSet, SCheck);
+			//	filterDefBeforeCheck(CV, udSet, SCheck);
 
 			//	filterDefFromCheckedValue(CV, udSet, SCheck);
 
@@ -2125,23 +2148,24 @@ bool CriticalVarPass::doModulePass(Module *M) {
 				for (std::set<InstructionUseDef>::iterator it = udSet.begin();
 						it != udSet.end(); ++it) {
 					InstructionUseDef IUD = *it;
-					OP << "IUD: " << *it->first << " " << it->second << "\n";
+					//OP << "IUD: " << *it->first << " " << it->second << "\n";
 					Instruction *Inst = IUD.first;
 					OP << '\n';
 					if (IUD.second != Used)
 					{
 						//LoadInst *LI = dyn_cast<LoadInst>(Inst);
-						OP << "    Defined by " << *Inst <<  "\n";
+						OP << "\033[31m" << "    Defined by " << *Inst  << "\033[0m" << " \n";
 					}
 					else
 					{
-						OP << "    Used by    " << *Inst << "\n";
+						OP << "\033[31m" << "    Used by " << *Inst  << "\033[0m" << " \n";
 					}
 
 					if (Inst->getFunction()) {
-						OP << "                 ["
+						OP << "["
 							<< "\033[34m" << "Func Name" << "\033[0m" << "] "
 							<< "\033[32m" << Inst->getFunction()->getName() << "\033[0m";
+						myfunc.insert(Inst->getFunction()->getName());
 					}
 					OP << '\n';
 					printSourceCodeInfo(Inst);
@@ -2190,6 +2214,23 @@ bool CriticalVarPass::doModulePass(Module *M) {
 #ifdef DEBUG_PRINT
 	OP << "== Number of critical variables: " << cv_set.size() << "\n";
 #endif
+	
+	fout << "\"enable_syscalls\": [";
+	
+	int myfunc_cnt = 0;
+	int myfunc_len = myfunc.size();
+	for ( std::set<std::string>::iterator it = myfunc.begin(); it != myfunc.end(); ++it )
+	{
+		myfunc_cnt++;
+		std::string ss = *it;
+		fout <<"\"" << ss << "\"";
+		if (myfunc_cnt != myfunc_len )
+			fout << ", ";
+	}
+
+	fout << "]\n"
+		<<"}";
+	fout.close();
 
 	return false;
 }
