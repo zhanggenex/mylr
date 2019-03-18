@@ -2107,8 +2107,8 @@ bool CriticalVarPass::doModulePass(Module *M) {
 #ifdef DEBUG_PRINT
 				OP << "== CV:" << *CV << '\n';
 				//OP << "== udSet size: " << udSet.size() << "\n";
-				if (dyn_cast<Instruction>(CV))
-					printSourceCodeInfo(dyn_cast<Instruction>(CV));
+				//if (dyn_cast<Instruction>(CV))
+					//printSourceCodeInfo(dyn_cast<Instruction>(CV));
 #endif
 
 			//	filterDefBeforeCheck(CV, udSet, SCheck);
@@ -2141,9 +2141,9 @@ bool CriticalVarPass::doModulePass(Module *M) {
 				OP << "\n== Critical Variable [" << lcc_counter << " / "
 					<< cuc_counter  << "]: " << "\033[33m" << *CV << "\033[0m"
 					<< "    (in function: \033[32m" << F->getName() << "\033[0m)" << '\n';
-				printSourceCodeInfo(CV);
+				//printSourceCodeInfo(CV);
 				OP << "== Security Check: " << "\033[33m" << *SCheck << "\033[0m\n";
-				printSourceCodeInfo(SCheck);
+				//printSourceCodeInfo(SCheck);
 				//OP << "== udSet size: " << udSet.size() << "\n";
 				for (std::set<InstructionUseDef>::iterator it = udSet.begin();
 						it != udSet.end(); ++it) {
@@ -2168,7 +2168,7 @@ bool CriticalVarPass::doModulePass(Module *M) {
 						myfunc.insert(Inst->getFunction()->getName());
 					}
 					OP << '\n';
-					printSourceCodeInfo(Inst);
+					//printSourceCodeInfo(Inst);
 
 #if ENABLE_SOURCE_TRACKING
 					if (IUD.second != Defined)
@@ -2197,13 +2197,13 @@ bool CriticalVarPass::doModulePass(Module *M) {
 								<< *ConInst << "\n";
 							OP << "         in function: "
 								<< ConInst->getFunction()->getName() << "\n";
-							printSourceCodeInfo(ConInst);
+							//printSourceCodeInfo(ConInst);
 						}
 						OP << "    == The source is finally defined here: \033[33m"
 							<< *Inst << "\033[0m\n";
 						OP << "       in function: "
 							<< Inst->getFunction()->getName() << "\n";
-						printSourceCodeInfo(Inst);
+						//printSourceCodeInfo(Inst);
 					}
 #endif
 				}
