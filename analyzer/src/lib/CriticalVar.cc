@@ -19,7 +19,7 @@
 // don't check critical function
 #define VARIABLE_ONLY 1
 
-#define ENABLE_SOURCE_TRACKING 1
+#define ENABLE_SOURCE_TRACKING 0
 
 // Number of addresses to track for each identified
 // modification of a critical variable
