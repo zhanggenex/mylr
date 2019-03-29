@@ -177,7 +177,7 @@ class CriticalVarPass : public IterativeModulePass {
 		: IterativeModulePass(Ctx_, "CriticalVar") { }
 	virtual bool doInitialization(llvm::Module *);
 	virtual bool doFinalization(llvm::Module *);
-	virtual bool doModulePass(llvm::Module *);
+	virtual bool doModulePass(llvm::Module *, StringRef mname);
 };
 
 #endif

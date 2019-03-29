@@ -643,8 +643,8 @@ void CriticalVarPass::findCriticalVariable(
 
 	if (isFunctionParameter(V, F)) {
 #ifdef DEBUG_PRINT
-		OP << "== A critical variable is identified (function parameter): ";
-		OP << "\033[31m" << *V << "\033[0m" << "\n";
+		//OP << "== A critical variable is identified (function parameter): ";
+		//OP << "\033[31m" << *V << "\033[0m" << "\n";
 #endif
 		CheckToVars[SCheck].insert(V);
 		return;
@@ -1948,7 +1948,7 @@ bool CriticalVarPass::doFinalization(Module *M) {
   return false;
 }
 
-bool CriticalVarPass::doModulePass(Module *M) {
+bool CriticalVarPass::doModulePass(Module *M, StringRef mname) {
 	std::set<std::string>myfunc;
 	myfunc.clear();
 	std::ofstream fout("my.cfg");
@@ -2042,11 +2042,11 @@ bool CriticalVarPass::doModulePass(Module *M) {
 		//OP << "== number of security checks: " << sc_counter << "\n";
 
 #ifdef DEBUG_PRINT
-		OP << "\n\n\n------------------------------------\n== number of security checks: " << securityChecks.size() << "\n";
+		//OP << "\n\n\n------------------------------------\n== number of security checks: " << securityChecks.size() << "\n";
 		for (std::set<Value *>::iterator it = securityChecks.begin(),
 				ie = securityChecks.end(); it != ie; ++it) {
 			Value *SC = *it;
-			OP << "\n== Security check: " << *SC << "\n";
+			//OP << "\n== Security check: " << *SC << "\n";
 			//printSourceCodeInfo(dyn_cast<Instruction>(SC));
 		}
 #endif
@@ -2105,7 +2105,7 @@ bool CriticalVarPass::doModulePass(Module *M) {
 				}
 
 #ifdef DEBUG_PRINT
-				OP << "== CV:" << *CV << '\n';
+				//OP << "== CV:" << *CV << '\n';
 				//OP << "== udSet size: " << udSet.size() << "\n";
 				//if (dyn_cast<Instruction>(CV))
 					//printSourceCodeInfo(dyn_cast<Instruction>(CV));
@@ -2138,11 +2138,11 @@ bool CriticalVarPass::doModulePass(Module *M) {
 				lcc_counter++;
 				//获取所有对criticalvaribal的修改，认为所有修改都是违法的，扩大范围
 
-				OP << "\n== Critical Variable [" << lcc_counter << " / "
-					<< cuc_counter  << "]: " << "\033[33m" << *CV << "\033[0m"
-					<< "    (in function: \033[32m" << F->getName() << "\033[0m)" << '\n';
+				//OP << "\n== Critical Variable [" << lcc_counter << " / "
+					//<< cuc_counter  << "]: " << "\033[33m" << *CV << "\033[0m"
+					//<< "    (in function: \033[32m" << F->getName() << "\033[0m)" << '\n';
 				//printSourceCodeInfo(CV);
-				OP << "== Security Check: " << "\033[33m" << *SCheck << "\033[0m\n";
+				//OP << "== Security Check: " << "\033[33m" << *SCheck << "\033[0m\n";
 				//printSourceCodeInfo(SCheck);
 				//OP << "== udSet size: " << udSet.size() << "\n";
 				for (std::set<InstructionUseDef>::iterator it = udSet.begin();
@@ -2151,6 +2151,7 @@ bool CriticalVarPass::doModulePass(Module *M) {
 					//OP << "IUD: " << *it->first << " " << it->second << "\n";
 					Instruction *Inst = IUD.first;
 					OP << '\n';
+					OP  << "Source file " << mname << " \n";
 					if (IUD.second != Used)
 					{
 						//LoadInst *LI = dyn_cast<LoadInst>(Inst);
@@ -2212,7 +2213,7 @@ bool CriticalVarPass::doModulePass(Module *M) {
 	}
 
 #ifdef DEBUG_PRINT
-	OP << "== Number of critical variables: " << cv_set.size() << "\n";
+	//OP << "== Number of critical variables: " << cv_set.size() << "\n";
 #endif
 	
 	fout << "\"enable_syscalls\": [";

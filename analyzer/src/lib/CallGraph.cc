@@ -144,7 +144,7 @@ bool CallGraphPass::doFinalization(Module *M) {
 	return false;
 }
 
-bool CallGraphPass::doModulePass(Module *M) {
+bool CallGraphPass::doModulePass(Module *M, StringRef mname) {
 
 	// Use type-analysis to concervatively find possible targets of 
 	// indirect calls.

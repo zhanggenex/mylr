@@ -54,16 +54,16 @@ GlobalContext GlobalCtx;
 void IterativeModulePass::run(ModuleList &modules) {
 
   ModuleList::iterator i, e;
-  OP << "[" << ID << "] Initializing " << modules.size() << " modules ";
+  //OP << "[" << ID << "] Initializing " << modules.size() << " modules ";
   bool again = true;
   while (again) {
     again = false;
     for (i = modules.begin(), e = modules.end(); i != e; ++i) {
       again |= doInitialization(i->first);
-      OP << ".";
+      //OP << ".";
     }
   }
-  OP << "\n";
+  //OP << "\n";
 
   unsigned iter = 0, changed = 1;
   while (changed) {
@@ -72,21 +72,21 @@ void IterativeModulePass::run(ModuleList &modules) {
     unsigned counter_modules = 0;
     unsigned total_modules = modules.size();
     for (i = modules.begin(), e = modules.end(); i != e; ++i) {
-      OP << "[" << ID << " / " << iter << "] ";
-      OP << "[" << ++counter_modules << " / " << total_modules << "] ";
-      OP << "[" << i->second << "]\n";
+     // OP << "[" << ID << " / " << iter << "] ";
+     // OP << "[" << ++counter_modules << " / " << total_modules << "] ";
+     // OP << "[" << i->second << "]\n";
 
-      bool ret = doModulePass(i->first);
+      bool ret = doModulePass(i->first, i->second);
       if (ret) {
         ++changed;
-        OP << "\t [CHANGED]\n";
-      } else
-        OP << "\n";
+        //OP << "\t [CHANGED]\n";
+      } //else
+        //OP << "\n";
     }
-    OP << "[" << ID << "] Updated in " << changed << " modules.\n";
+    //OP << "[" << ID << "] Updated in " << changed << " modules.\n";
   }
 
-  OP << "[" << ID << "] Postprocessing ...\n";
+  //OP << "[" << ID << "] Postprocessing ...\n";
   again = true;
   while (again) {
     again = false;
@@ -96,7 +96,7 @@ void IterativeModulePass::run(ModuleList &modules) {
     }
   }
 
-  OP << "[" << ID << "] Done!\n\n";
+  //OP << "[" << ID << "] Done!\n\n";
 }
 
 void LoadStaticData(GlobalContext *GCtx) {
@@ -117,18 +117,18 @@ int main(int argc, char **argv)
   SMDiagnostic Err;
 
   // Loading modules
-  OP << "Total " << InputFilenames.size() << " file(s)\n";
+  //OP << "Total " << InputFilenames.size() << " file(s)\n";
   
   time_t start,stop;
 
   for (unsigned i = 0; i < InputFilenames.size(); ++i) {
 
     LLVMContext *LLVMCtx = new LLVMContext();
-   //std::cout << InputFilenames[i] << "\n";
+    //std::cout << InputFilenames[i] << "\n";
     start = time(NULL);
     std::unique_ptr<Module> M = parseIRFile(InputFilenames[i], Err, *LLVMCtx);
     stop = time(NULL);    
-    std::cout << "Parse time " << stop - start << " 秒\n";
+    //std::cout << "Parse time " << stop - start << " 秒\n";
 
     if (M == NULL) {
       OP << argv[0] << ": error loading file '"
@@ -148,7 +148,7 @@ int main(int argc, char **argv)
   CallGraphPass CGPass(&GlobalCtx);
   CGPass.run(GlobalCtx.Modules);
   stop = time(NULL);    
-  std::cout << "Call graph time " << stop - start << " 秒\n";
+  //std::cout << "Call graph time " << stop - start << " 秒\n";
 
 	// Identify critical variables and functions
 	if (CriticalVar) {
@@ -157,14 +157,14 @@ int main(int argc, char **argv)
     PointerAnalysisPass PAPass(&GlobalCtx);
     PAPass.run(GlobalCtx.Modules);
     stop = time(NULL);    
-    std::cout << "Point analysis time " << stop - start << " 秒\n";
+    //std::cout << "Point analysis time " << stop - start << " 秒\n";
 
     start = time(NULL);
     LoadStaticData(&GlobalCtx);
     CriticalVarPass CVPass(&GlobalCtx);
     CVPass.run(GlobalCtx.Modules);
     stop = time(NULL);    
-    std::cout << "Error node, critical varibal, check-use, modification time " << stop - start << " 秒\n";
+    //std::cout << "Error node, critical varibal, check-use, modification time " << stop - start << " 秒\n";
   }
 
   return 0;

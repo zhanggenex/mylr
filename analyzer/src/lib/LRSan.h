@@ -94,7 +94,7 @@ public:
 		{ return true; }
 
 	// Iterative pass.
-	virtual bool doModulePass(llvm::Module *M)
+	virtual bool doModulePass(llvm::Module *M, StringRef mname)
 		{ return false; }
 
 	virtual void run(ModuleList &modules);

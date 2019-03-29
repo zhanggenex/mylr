@@ -17,7 +17,7 @@ class PointerAnalysisPass : public IterativeModulePass {
       : IterativeModulePass(Ctx_, "PointerAnalysis") { }
     virtual bool doInitialization(llvm::Module *);
     virtual bool doFinalization(llvm::Module *);
-    virtual bool doModulePass(llvm::Module *);
+    virtual bool doModulePass(llvm::Module *, StringRef mname);
 };
 
 #endif

@@ -20,7 +20,7 @@ class CallGraphPass : public IterativeModulePass {
 			: IterativeModulePass(Ctx_, "CallGraph") { }
 		virtual bool doInitialization(llvm::Module *);
 		virtual bool doFinalization(llvm::Module *);
-		virtual bool doModulePass(llvm::Module *);
+		virtual bool doModulePass(llvm::Module *, StringRef mname);
 };
 
 #endif

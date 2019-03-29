@@ -147,7 +147,7 @@ void PointerAnalysisPass::detectAliasPointers(Function *F,
   }
 }
 
-bool PointerAnalysisPass::doModulePass(Module *M) {
+bool PointerAnalysisPass::doModulePass(Module *M, StringRef mname) {
   // Save TargetLibraryInfo.
   Triple ModuleTriple(M->getTargetTriple());
   TargetLibraryInfoImpl TLII(ModuleTriple);
