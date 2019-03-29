@@ -2132,17 +2132,17 @@ bool CriticalVarPass::doModulePass(Module *M, StringRef mname) {
 				cuc_counter++;
 				//OP << "cuc, hasdefine: "<< cuc_counter << " " << hasDefine << "\n";
 
-				if (!hasDefine)
+				if (!hasDefine || !hasUse)
 					continue;
 
 				lcc_counter++;
 				//获取所有对criticalvaribal的修改，认为所有修改都是违法的，扩大范围
 
-				//OP << "\n== Critical Variable [" << lcc_counter << " / "
-					//<< cuc_counter  << "]: " << "\033[33m" << *CV << "\033[0m"
-					//<< "    (in function: \033[32m" << F->getName() << "\033[0m)" << '\n';
+				OP << "\n== Critical Variable [" << lcc_counter << " / "
+					<< cuc_counter  << "]: " << "\033[33m" << *CV << "\033[0m"
+					<< "    (in function: \033[32m" << F->getName() << "\033[0m)" << '\n';
 				//printSourceCodeInfo(CV);
-				//OP << "== Security Check: " << "\033[33m" << *SCheck << "\033[0m\n";
+				OP << "== Security Check: " << "\033[33m" << *SCheck << "\033[0m\n";
 				//printSourceCodeInfo(SCheck);
 				//OP << "== udSet size: " << udSet.size() << "\n";
 				for (std::set<InstructionUseDef>::iterator it = udSet.begin();
