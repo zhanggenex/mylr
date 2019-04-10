@@ -9,11 +9,7 @@
 #include <string>
 #include <iostream> 
 
-//
-// Configurations for compilation.
-//
-//#define VERBOSE_SA 1
-//#define DEBUG_SA 1
+
 #define SOUND_MODE 1
 
 #define RESULTS_FILE "/tmp/LRSanResult.txt"
